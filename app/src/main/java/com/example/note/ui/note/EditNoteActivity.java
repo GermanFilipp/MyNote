@@ -72,6 +72,10 @@ public class EditNoteActivity extends Activity {
 
                 new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
                         editNote.getText().toString()));
+                Intent intent = new Intent(this, NoteActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                startActivity(intent);
 
 
                 finish();
@@ -172,13 +176,6 @@ public class EditNoteActivity extends Activity {
                     case 0:
 
 
-                        Intent intentLogOut = new Intent(EditNoteActivity.this, NoteActivity.class);
-
-                        intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentLogOut);
-
-                        noteAdapter.swapCursor(c);
-                        noteAdapter.notifyDataSetChanged();
 
                         Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);

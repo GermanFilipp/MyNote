@@ -1,7 +1,9 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,6 +18,8 @@ import com.example.note.MyApplication;
 import com.example.note.R;
 import com.example.note.api.APIexception;
 import com.example.note.model.Note;
+import com.example.note.model.dataBase.UserDataBase;
+import com.example.note.model.dataBase.UserDataBaseHelper;
 
 public class NewNoteActivity extends Activity {
     public API API;
@@ -23,12 +27,22 @@ public class NewNoteActivity extends Activity {
     protected EditText titleNote;
     protected Note note = new Note();
     protected NoteAdapter noteAdapter;
+  //  public  UserDataBaseHelper userDataBaseHelper;
+    ContentValues contentValues = new ContentValues();
+   private final static  String [] myContent = {UserDataBase.TableData._ID,
+                                               UserDataBase.TableData.TITLE,
+                                               UserDataBase.TableData.SHORT_CONTENT} ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_note_activity);
         API = new API();
-        noteAdapter = new NoteAdapter(this, ((MyApplication)getApplication()).getLocalData());
+
+        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
+        noteAdapter = new NoteAdapter(this, (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,myContent,null,null,null,null,"_ID")));
+
         textNote  = (EditText) findViewById(R.id.textNote);
         titleNote = (EditText) findViewById(R.id.titleNote);
     }
@@ -49,10 +63,18 @@ public class NewNoteActivity extends Activity {
             case R.id.action_save_new_note:
                 new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
 
-                //((MyApplication) getApplication()).getLocalData().getmNotes().set(intent.getIntExtra("NoteID", -1), new Note(((MyApplication) getApplication()).getLocalData().getmNotes().get(intent.getIntExtra("NoteID", -1)).getTitle(), DESCRIPTION));
+               // ((MyApplication) getApplication()).getLocalData().getmNotes().set(intent.getIntExtra("NoteID", -1), new Note(((MyApplication) getApplication()).getLocalData().getmNotes().get(intent.getIntExtra("NoteID", -1)).getTitle(), DESCRIPTION));
 
 
-               // startActivity(intent);
+                UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
+                userDataBaseHelper.getWritableDatabase().replace("TABLE_DATA",null,contentValues);
+                String [] allTable = new String[]{UserDataBase.TableData._ID,
+                                                UserDataBase.TableData.TITLE,
+                                                UserDataBase.TableData.SHORT_CONTENT};
+
+
+                Cursor c =(userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,allTable,null,null,null,null,"_ID"));
+
                 return true;
 
             default:
@@ -85,6 +107,9 @@ public class NewNoteActivity extends Activity {
 
     public class MyAsyncTask extends AsyncTask<NoteCreate, Void, com.example.note.api.API.CreateNoteResponse> {
 
+
+
+        NoteCreate request;
         APIexception apiexception;
 
         @Override
@@ -99,6 +124,7 @@ public class NewNoteActivity extends Activity {
 
 
             try {
+                request = params[0];
                 return API.putNote(params[0].getSessionID(), params[0].getContent(), params[0].getTitile());
             } catch (APIexception apIexception) {
                 apIexception.printStackTrace();
@@ -116,11 +142,19 @@ public class NewNoteActivity extends Activity {
             if(result != null){
                 switch(result.getCreateNote()) {
                     case 0:
+
+                       UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NewNoteActivity.this);
+
+                        contentValues.put(UserDataBase.TableData.TITLE,request.getTitile());
+                        contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
+                        contentValues.put(UserDataBase.TableData._ID, request.getSessionID());
+                        userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
                         Intent intentLogOut = new Intent(NewNoteActivity.this, NoteActivity.class);
 
                         intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentLogOut);
                         noteAdapter.notifyDataSetChanged();
+
                         Toast toast = Toast.makeText(NewNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();

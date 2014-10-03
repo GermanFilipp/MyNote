@@ -8,7 +8,6 @@ public class Note {
     String shortContent;
 
     public Note(){
-    
 }
 
     public long getId(){

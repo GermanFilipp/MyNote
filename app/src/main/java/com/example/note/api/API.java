@@ -48,7 +48,7 @@ public class API {
         } catch (Exception e) {
             throw new APIexception(APIexception.TypeError.ERROR_CONNECTION ,e);
     }
-finally {
+     finally {
             Log.d("GET","response: "+result);
         }
         return result;
@@ -145,6 +145,7 @@ finally {
         public long getNoteID(){
             return noteID;
         }
+
     }
     public CreateNoteResponse putNote(String id,String note,String note_title_note) throws APIexception {
         String rawResponse = GET(createUrlBuilder().appendPath("createNote")

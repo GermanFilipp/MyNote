@@ -1,7 +1,9 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,8 @@ import com.example.note.MyApplication;
 import com.example.note.R;
 import com.example.note.api.API;
 import com.example.note.api.APIexception;
+import com.example.note.model.dataBase.UserDataBase;
+import com.example.note.model.dataBase.UserDataBaseHelper;
 import com.example.note.ui.note.NoteActivity;
 
 import static com.example.note.ui.note.NoteActivity.*;
@@ -27,7 +31,11 @@ public class EditNoteActivity extends Activity {
     private final String LONG_EXTRA  = "ID";
     private final String INT_EXTRA   = "POSITION";
     protected NoteAdapter noteAdapter;
-
+    public static final String [] myContent = {UserDataBase.TableData._ID,
+                                               UserDataBase.TableData.TITLE,
+                                               UserDataBase.TableData.SHORT_CONTENT} ;
+    ContentValues contentValues = new ContentValues();
+    Cursor c;
     public class GetNote {
         private long noteID;
         private String sessionID;
@@ -47,11 +55,23 @@ public class EditNoteActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+       UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
+        c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
+        noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_note);
         editNote = (EditText) findViewById(R.id.editNote);
-        noteAdapter = new NoteAdapter(this, ((MyApplication)getApplication()).getLocalData());
+        //noteAdapter = new NoteAdapter(this, ((MyApplication)getApplication()).getSqLiteDatabase());
+
+        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
+        noteAdapter = new NoteAdapter(this, c = (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,myContent,null,null,null,null,"_ID")));
         new GetNoteAsyncTask().execute(new GetNote(((MyApplication)getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
 
     };
@@ -68,7 +88,8 @@ public class EditNoteActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_edit_note:
 
-                new EditNoteAsyncTask().execute(new EditNote(((MyApplication)getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1) , editNote.getText().toString()));
+                new EditNoteAsyncTask().execute(new EditNote(((MyApplication)getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1) ,
+                        editNote.getText().toString()));
 
 
                 finish();
@@ -105,6 +126,7 @@ public class EditNoteActivity extends Activity {
     public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {
 
         APIexception apiexception;
+        EditNote request;
 
         @Override
         protected void onPreExecute() {
@@ -117,11 +139,12 @@ public class EditNoteActivity extends Activity {
         protected EditNoteResponse doInBackground(EditNote... params) {
 
             try {
-                ((MyApplication)getApplication()).getLocalData().addLocalNoteForIndex(getActionBar().getTitle().toString(), params[0].text, getIntent().getLongExtra(LONG_EXTRA, -1) , getIntent().getIntExtra(INT_EXTRA, -1));
-               // Log.d("EDIT_NOTE", );
 
-                noteAdapter.notifyDataSetChanged();
+
+                 request = params[0];
+
                 return API.getEditNote(params[0].sessionID, params[0].noteID, params[0].text);
+
             } catch (APIexception e) {
                 apiexception = e;
                 e.printStackTrace();
@@ -136,10 +159,22 @@ public class EditNoteActivity extends Activity {
 
 
             if (result == null) {
-               // APIUtils.ToastException(EditNoteActivity.this, apiexception);
+
             } else {
                 switch (result.result) {
                     case 0:
+
+
+                        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(EditNoteActivity.this);
+                        contentValues.put(UserDataBase.TableData._ID, request.noteID);
+                        contentValues.put(UserDataBase.TableData.TITLE, request.getText());
+
+
+                         userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
+
+
+                       c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
+                        noteAdapter.swapCursor(c);
                         noteAdapter.notifyDataSetChanged();
                         Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
@@ -181,7 +216,7 @@ public class EditNoteActivity extends Activity {
     public class GetNoteAsyncTask extends AsyncTask<GetNote, Void, API.GetNoteResponse> {
 
         APIexception apiexception;
-
+        GetNote request;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -192,6 +227,7 @@ public class EditNoteActivity extends Activity {
         protected API.GetNoteResponse doInBackground(GetNote... params) {
             API API = new API();
             try {
+                request = params[0];
                 return API.getNote(params[0].sessionID, params[0].noteID);
             } catch (APIexception e) {
                 apiexception = e;
@@ -213,11 +249,13 @@ public class EditNoteActivity extends Activity {
                 switch(result.result) {
                     case 0:
 
-                        getActionBar().setTitle(result.getTitle());
 
+                       getActionBar().setTitle(result.getTitle());
                         editNote.setText(result.getContent());
 
-                        Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
+
+
+                        Toast toast = Toast.makeText(EditNoteActivity.this, "herCreate note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();
 

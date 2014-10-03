@@ -5,12 +5,6 @@ import java.util.ArrayList;
 public class LocalData  {
 
     private String sessionID;
-    private ArrayList<Note> mNotes = new ArrayList<Note>();
-
-    public void setmNotes(ArrayList<Note> mNotes) {
-        this.mNotes = mNotes;
-    }
-
     public void setSessionID(String sessionId) {
         this.sessionID = sessionId;
     }
@@ -19,10 +13,17 @@ public class LocalData  {
         return sessionID;
     }
 
-    public ArrayList<Note> getmNotes() {
-        return this.mNotes;
+    // private ArrayList<Note> mNotes = new ArrayList<Note>();
+
+ /*   public void setmNotes(ArrayList<Note> mNotes) {
+        this.mNotes = mNotes;
     }
-    public void addLocalNote(String title, String content, long id){
+*/
+
+    /*public ArrayList<Note> getmNotes() {
+        return this.mNotes;
+    }*/
+  /*  public void addLocalNote(String title, String content, long id){
         mNotes.add(new Note(title, content, id));
     }
 
@@ -33,6 +34,6 @@ public class LocalData  {
     public void clear(){
         sessionID = null;
         mNotes.clear();
-    }
+    }*/
 
 }

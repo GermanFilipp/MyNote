@@ -1,8 +1,9 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
-import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,43 +15,45 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.example.note.api.API.DeleteNoteResponse;
+
 import com.example.note.MyApplication;
 import com.example.note.R;
 import com.example.note.api.API;
+import com.example.note.api.API.DeleteNoteResponse;
 import com.example.note.api.APIexception;
-import com.example.note.model.Note;
+import com.example.note.model.dataBase.UserDataBase;
+import com.example.note.model.dataBase.UserDataBaseHelper;
 import com.example.note.ui.login.MainActivity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class NoteActivity extends Activity {
+    private static final String LONG_EXTRA = "ID";
+    private static final String INT_EXTRA = "POSITION";
+    private static final String[] myContent = {UserDataBase.TableData._ID,
+            UserDataBase.TableData.TITLE,
+            UserDataBase.TableData.SHORT_CONTENT};
+    public API API = new API();
+    public UserDataBaseHelper userDataBaseHelper;
     protected NoteAdapter noteAdapter;
     protected Button buttonDelete;
     protected ListView lv;
-    public API API = new API();
-    private static final String LONG_EXTRA = "ID";
-    private static final String INT_EXTRA  = "POSITION";
+    Cursor c;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_activity);
-
-        new MyNotesListAsyncTask().execute(new  NotesList(((MyApplication)getApplication()).getLocalData().getSessionID()));
-
-        noteAdapter = new NoteAdapter(this, ((MyApplication)getApplication()).getLocalData());
-
-        //buttonDelete = (Button) findViewById(R.id.buttonDelete);
+        new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
+        userDataBaseHelper = new UserDataBaseHelper(this);
+        c = (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, "_ID"));
+        noteAdapter = new NoteAdapter(this, c);
 
         lv = (ListView) findViewById(R.id.list);
         lv.setAdapter(noteAdapter);
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                Intent intent  = new Intent(NoteActivity.this, EditNoteActivity.class);
+                Intent intent = new Intent(NoteActivity.this, EditNoteActivity.class);
 
                 intent.putExtra(INT_EXTRA, position);
                 intent.putExtra(LONG_EXTRA, id);
@@ -64,13 +67,55 @@ public class NoteActivity extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // new DeleteAsyncTask().execute(new Delete(((MyApplication)getApplication()).getLocalData().getSessionID(), id));
-                new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication)getApplication()).getLocalData().getSessionID(), id));
+
+                new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), id));
                 new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
 
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_changePassword:
+                Intent intentChangePassword = new Intent(this, ChangePasswordActivity.class);
+                startActivity(intentChangePassword);
+                return true;
+            case R.id.action_logOut:
+                API = new API();
+                new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
+                return true;
+            case R.id.action_add:
+                Intent intentAdd = new Intent(this, NewNoteActivity.class);
+                startActivity(intentAdd);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void ClicButton(View v) {
+        Toast.makeText(this, "Delete note", Toast.LENGTH_SHORT).show();
+
     }
 
     public class NotesList {
@@ -112,26 +157,30 @@ public class NoteActivity extends Activity {
         @Override
         protected void onPostExecute(API.GetNotesListResponse result) {
             super.onPostExecute(result);
+
+
             if (result != null) {
                 switch (result.result) {
                     case 0:
 
                         if (result.getNotesArray() != null) {
-                            ArrayList<Note> mNotes = new ArrayList<Note>();
 
-                            for(com.example.note.api.API.NoteResponse item: result.getNotesArray()) {
 
-                             Note note = new Note();
-                                note.setID(item.noteID);
-                                note.setDescription(item.shortContent);
-                                note.setTitle(item.title);
-                                mNotes.add(note);
+                            for (com.example.note.api.API.NoteResponse item : result.getNotesArray()) {
+
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put(UserDataBase.TableData._ID, item.noteID);
+                                contentValues.put(UserDataBase.TableData.TITLE, item.title);
+                                contentValues.put(UserDataBase.TableData.SHORT_CONTENT, item.shortContent);
+
+                                userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
+
                             }
-                            if(noteAdapter != null) {
-                                noteAdapter.notifyDataSetChanged();
-                            }
-                            ((MyApplication) getApplication()).getLocalData().setmNotes(mNotes);
-                        }//.setmNotes(mNotes)
+                            c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
+                            noteAdapter.swapCursor(c);
+
+
+                        }
 
                         break;
 
@@ -153,46 +202,13 @@ public class NoteActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        noteAdapter.notifyDataSetChanged();
-        super.onResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_changePassword:
-                Intent intentChangePassword = new Intent(this, ChangePasswordActivity.class);
-                startActivity(intentChangePassword);
-                return true;
-            case R.id.action_logOut:
-                API = new API();
-                new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
-                return true;
-            case R.id.action_add:
-                Intent intentAdd = new Intent(this, NewNoteActivity.class);
-                startActivity(intentAdd);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    public class DeleteRequest{
+    public class DeleteRequest {
         private String sessionID;
         private long noteId;
 
-        public DeleteRequest(String _sessionID, long id){
+        public DeleteRequest(String _sessionID, long id) {
             sessionID = _sessionID;
-            noteId    = id;
+            noteId = id;
         }
 
         public String getSessionID() {
@@ -204,8 +220,8 @@ public class NoteActivity extends Activity {
         }
     }
 
-    public class DeleteAsyncTask extends AsyncTask<DeleteRequest, Void,DeleteNoteResponse> {
-
+    public class DeleteAsyncTask extends AsyncTask<DeleteRequest, Void, DeleteNoteResponse> {
+        DeleteRequest request;
         APIexception apiexception;
 
         @Override
@@ -214,9 +230,10 @@ public class NoteActivity extends Activity {
         }
 
         @Override
-        protected  DeleteNoteResponse doInBackground(DeleteRequest... params) {
+        protected DeleteNoteResponse doInBackground(DeleteRequest... params) {
 
             try {
+                request = params[0];
                 return API.deleteNote(params[0].getSessionID(), params[0].getNoteID());
             } catch (APIexception e) {
                 apiexception = e;
@@ -231,28 +248,36 @@ public class NoteActivity extends Activity {
             super.onPostExecute(result);
 
 
-
-            if(result != null){
-                switch(result.result) {
+            if (result != null) {
+                switch (result.result) {
                     case 0:
+                        ContentValues contentValues = new ContentValues();
+                        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NoteActivity.this);
+                        contentValues.remove(UserDataBase.TableData._ID/*, request.getNoteID()*/);
+
+
+                        userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
+
+                        noteAdapter.swapCursor(c);
                         noteAdapter.notifyDataSetChanged();
                         break;
 
                     case 2:
-                        Toast toast1 = Toast.makeText(NoteActivity.this, "Some problems",Toast.LENGTH_LONG);
+                        Toast toast1 = Toast.makeText(NoteActivity.this, "Some problems", Toast.LENGTH_LONG);
                         toast1.setGravity(Gravity.BOTTOM, 10, 50);
                         toast1.show();
 
                         break;
 
                 }
-            }else {
-                Toast toast1 = Toast.makeText(NoteActivity.this, "Exception",Toast.LENGTH_LONG);
+            } else {
+                Toast toast1 = Toast.makeText(NoteActivity.this, "Exception", Toast.LENGTH_LONG);
                 toast1.setGravity(Gravity.BOTTOM, 10, 50);
                 toast1.show();
             }
         }
     }
+
     public class LogOut {
         private String sessionID;
 
@@ -278,11 +303,11 @@ public class NoteActivity extends Activity {
         protected API.LogoutResponse doInBackground(LogOut... params) {
 
 
-                try {
-                    return API.getLogout(params[0].sessionID);
-                } catch (APIexception apIexception) {
-                    apIexception.printStackTrace();
-                }
+            try {
+                return API.getLogout(params[0].sessionID);
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
 
             return null;
         }
@@ -290,7 +315,6 @@ public class NoteActivity extends Activity {
         @Override
         protected void onPostExecute(API.LogoutResponse result) {
             super.onPostExecute(result);
-
 
 
             if (result != null) {
@@ -322,10 +346,6 @@ public class NoteActivity extends Activity {
                 toast1.show();
             }
         }
-    }
-    public void ClicButton(View v) {
-        Toast.makeText(this, "Delete note", Toast.LENGTH_SHORT).show();
-
     }
 }
 

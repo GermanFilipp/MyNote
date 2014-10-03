@@ -118,7 +118,6 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
             oldPassword.setEnabled(true);
             newPassword.setEnabled(true);
             reenterNewPassword.setEnabled(true);
-
             enterButton.setEnabled(true);
 
 

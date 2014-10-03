@@ -8,19 +8,271 @@
 package com.example.note;
 
 public final class R {
+    public static final class array {
+        public static final int blood=0x7f040000;
+        public static final int blossom=0x7f040001;
+        public static final int candy=0x7f040002;
+        public static final int dark=0x7f040003;
+        public static final int deep=0x7f040004;
+        public static final int grape=0x7f040005;
+        public static final int grass=0x7f040006;
+        public static final int orange=0x7f040007;
+        public static final int sand=0x7f040008;
+        public static final int sea=0x7f040009;
+        public static final int sky=0x7f04000a;
+        public static final int snow=0x7f04000b;
+    }
     public static final class attr {
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>flat</code></td><td>0</td><td></td></tr>
+<tr><td><code>box</code></td><td>1</td><td></td></tr>
+<tr><td><code>transparent</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int fl_autoFieldStyle=0x7f010009;
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>fl_darker</code></td><td>0</td><td></td></tr>
+<tr><td><code>fl_dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>fl_main</code></td><td>2</td><td></td></tr>
+<tr><td><code>fl_light</code></td><td>3</td><td></td></tr>
+</table>
+         */
+        public static final int fl_backgroundColor=0x7f01000d;
+        /**  Defines the height of the border bottom of the button 
+         <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_blockButtonEffectHeight=0x7f01000a;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_borderWidth=0x7f010000;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_cornerRadius=0x7f010001;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_customBackgroundColor=0x7f01000e;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_dotMargin=0x7f010002;
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>flat</code></td><td>0</td><td></td></tr>
+<tr><td><code>box</code></td><td>1</td><td></td></tr>
+<tr><td><code>transparent</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int fl_fieldStyle=0x7f01000b;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_fontExtension=0x7f010003;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_fontFamily=0x7f010004;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_fontWeight=0x7f010005;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_size=0x7f010006;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fl_space=0x7f01000f;
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>light</code></td><td>2</td><td></td></tr>
+</table>
+         */
+        public static final int fl_textAppearance=0x7f010007;
+        /** <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>darker</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>main</code></td><td>2</td><td></td></tr>
+<tr><td><code>light</code></td><td>3</td><td></td></tr>
+</table>
+         */
+        public static final int fl_textColor=0x7f01000c;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int fl_theme=0x7f010008;
     }
     public static final class color {
-        public static final int apptheme_color=0x7f040000;
+        public static final int apptheme_color=0x7f060000;
+        public static final int blood_dark=0x7f060001;
+        public static final int blood_darker=0x7f060002;
+        public static final int blood_light=0x7f060003;
+        public static final int blood_primary=0x7f060004;
+        public static final int blossom_dark=0x7f060005;
+        public static final int blossom_darker=0x7f060006;
+        public static final int blossom_light=0x7f060007;
+        public static final int blossom_primary=0x7f060008;
+        public static final int candy_dark=0x7f060009;
+        public static final int candy_darker=0x7f06000a;
+        public static final int candy_light=0x7f06000b;
+        public static final int candy_primary=0x7f06000c;
+        public static final int dark_dark=0x7f06000d;
+        public static final int dark_darker=0x7f06000e;
+        public static final int dark_light=0x7f06000f;
+        public static final int dark_primary=0x7f060010;
+        public static final int deep_dark=0x7f060011;
+        public static final int deep_darker=0x7f060012;
+        public static final int deep_light=0x7f060013;
+        public static final int deep_primary=0x7f060014;
+        public static final int grape_dark=0x7f060015;
+        public static final int grape_darker=0x7f060016;
+        public static final int grape_light=0x7f060017;
+        public static final int grape_primary=0x7f060018;
+        public static final int grass_dark=0x7f060019;
+        public static final int grass_darker=0x7f06001a;
+        public static final int grass_light=0x7f06001b;
+        public static final int grass_primary=0x7f06001c;
+        public static final int orange_dark=0x7f06001d;
+        public static final int orange_darker=0x7f06001e;
+        public static final int orange_light=0x7f06001f;
+        public static final int orange_primary=0x7f060020;
+        public static final int sand_dark=0x7f060021;
+        public static final int sand_darker=0x7f060022;
+        public static final int sand_light=0x7f060023;
+        public static final int sand_primary=0x7f060024;
+        public static final int sea_dark=0x7f060025;
+        public static final int sea_darker=0x7f060026;
+        public static final int sea_light=0x7f060027;
+        public static final int sea_primary=0x7f060028;
+        public static final int sky_dark=0x7f060029;
+        public static final int sky_darker=0x7f06002a;
+        public static final int sky_light=0x7f06002b;
+        public static final int sky_primary=0x7f06002c;
+        public static final int snow_dark=0x7f06002d;
+        public static final int snow_darker=0x7f06002e;
+        public static final int snow_light=0x7f06002f;
+        public static final int snow_primary=0x7f060030;
     }
     public static final class dimen {
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
-        public static final int marging_top=0x7f050002;
-        public static final int notepad_margin=0x7f050003;
-        public static final int tab_host_default_height=0x7f050004;
-        public static final int text_size_edit_text=0x7f050005;
-        public static final int text_size_text_view=0x7f050006;
+        public static final int activity_horizontal_margin=0x7f070000;
+        public static final int activity_vertical_margin=0x7f070001;
+        public static final int marging_top=0x7f070002;
+        public static final int notepad_margin=0x7f070003;
+        public static final int tab_host_default_height=0x7f070004;
+        public static final int text_size_edit_text=0x7f070005;
+        public static final int text_size_text_view=0x7f070006;
     }
     public static final class drawable {
         public static final int apptheme_activated_background_holo_light=0x7f020000;
@@ -147,30 +399,42 @@ public final class R {
         public static final int ic_launcher=0x7f020079;
     }
     public static final class id {
-        public static final int action_add=0x7f090014;
-        public static final int action_changePassword=0x7f090015;
-        public static final int action_edit_note=0x7f090013;
-        public static final int action_logOut=0x7f090016;
-        public static final int action_save_new_note=0x7f090017;
-        public static final int activity_name=0x7f090000;
-        public static final int button1=0x7f090009;
-        public static final int buttonEnterChenge=0x7f090005;
-        public static final int changePassword=0x7f090001;
-        public static final int editNote=0x7f090006;
-        public static final int list=0x7f090011;
-        public static final int listViewNote=0x7f090010;
-        public static final int logText=0x7f09000b;
-        public static final int newNote=0x7f09000d;
-        public static final int newPassword=0x7f090003;
-        public static final int noteName=0x7f090007;
-        public static final int noteSubtitle=0x7f090008;
-        public static final int oldPassword=0x7f090002;
-        public static final int passText=0x7f09000a;
-        public static final int reenterPassword=0x7f090004;
-        public static final int repeatPassText=0x7f090012;
-        public static final int textNote=0x7f09000f;
-        public static final int textView1=0x7f09000c;
-        public static final int titleNote=0x7f09000e;
+        public static final int action_add=0x7f050020;
+        public static final int action_changePassword=0x7f050021;
+        public static final int action_edit_note=0x7f05001f;
+        public static final int action_logOut=0x7f050022;
+        public static final int action_save_new_note=0x7f050023;
+        public static final int activity_name=0x7f05000c;
+        public static final int box=0x7f050004;
+        public static final int button1=0x7f050015;
+        public static final int buttonEnterChenge=0x7f050011;
+        public static final int changePassword=0x7f05000d;
+        public static final int dark=0x7f050001;
+        public static final int darker=0x7f050006;
+        public static final int editNote=0x7f050012;
+        public static final int fl_dark=0x7f050009;
+        public static final int fl_darker=0x7f050008;
+        public static final int fl_light=0x7f05000b;
+        public static final int fl_main=0x7f05000a;
+        public static final int flat=0x7f050003;
+        public static final int light=0x7f050002;
+        public static final int list=0x7f05001d;
+        public static final int listViewNote=0x7f05001c;
+        public static final int logText=0x7f050017;
+        public static final int main=0x7f050007;
+        public static final int newNote=0x7f050019;
+        public static final int newPassword=0x7f05000f;
+        public static final int none=0x7f050000;
+        public static final int noteName=0x7f050013;
+        public static final int noteSubtitle=0x7f050014;
+        public static final int oldPassword=0x7f05000e;
+        public static final int passText=0x7f050016;
+        public static final int reenterPassword=0x7f050010;
+        public static final int repeatPassText=0x7f05001e;
+        public static final int textNote=0x7f05001b;
+        public static final int textView1=0x7f050018;
+        public static final int titleNote=0x7f05001a;
+        public static final int transparent=0x7f050005;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -184,51 +448,1041 @@ public final class R {
         public static final int register_frag=0x7f030008;
     }
     public static final class menu {
-        public static final int edit_note_menu=0x7f080000;
-        public static final int main=0x7f080001;
-        public static final int new_note_menu=0x7f080002;
+        public static final int edit_note_menu=0x7f0a0000;
+        public static final int main=0x7f0a0001;
+        public static final int new_note_menu=0x7f0a0002;
     }
     public static final class string {
-        public static final int Login=0x7f060000;
-        public static final int Registration=0x7f060001;
-        public static final int action_addNoteIcon=0x7f060002;
-        public static final int action_changePassword=0x7f060003;
-        public static final int action_delete=0x7f060004;
-        public static final int action_logOut=0x7f060005;
-        public static final int action_settings=0x7f060006;
-        public static final int app_name=0x7f060007;
-        public static final int button_enter=0x7f060008;
-        public static final int login_edit_text=0x7f060009;
-        public static final int login_text_view=0x7f06000a;
-        public static final int new_passwor_edit_text=0x7f06000b;
-        public static final int old_password_edit_text=0x7f06000c;
-        public static final int password_edit_text=0x7f06000d;
-        public static final int reenter_passwod_edit_text=0x7f06000e;
-        public static final int registration_text_view=0x7f06000f;
-        public static final int save_new_note=0x7f060010;
-        public static final int textNote=0x7f060011;
-        public static final int titleNote=0x7f060012;
+        public static final int Login=0x7f080000;
+        public static final int Registration=0x7f080001;
+        public static final int action_addNoteIcon=0x7f080002;
+        public static final int action_changePassword=0x7f080003;
+        public static final int action_delete=0x7f080004;
+        public static final int action_logOut=0x7f080005;
+        public static final int action_settings=0x7f080006;
+        public static final int app_name=0x7f080007;
+        public static final int button_enter=0x7f080008;
+        public static final int login_edit_text=0x7f080009;
+        public static final int login_text_view=0x7f08000a;
+        public static final int new_passwor_edit_text=0x7f08000b;
+        public static final int old_password_edit_text=0x7f08000c;
+        public static final int password_edit_text=0x7f08000d;
+        public static final int reenter_passwod_edit_text=0x7f08000e;
+        public static final int registration_text_view=0x7f08000f;
+        public static final int save_new_note=0x7f080010;
+        public static final int textNote=0x7f080011;
+        public static final int titleNote=0x7f080012;
     }
     public static final class style {
         /**  API 11 theme customizations can go here. 
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070010;
-        public static final int AppTheme=0x7f070000;
-        public static final int AutoCompleteTextViewAppTheme=0x7f070001;
-        public static final int ButtonAppTheme=0x7f070002;
-        public static final int ButtonListStyle=0x7f070003;
-        public static final int ButtonStyle=0x7f070004;
-        public static final int ImageButtonAppTheme=0x7f070005;
-        public static final int ProgressBarAppTheme=0x7f070006;
-        public static final int RatingBarAppTheme=0x7f070007;
-        public static final int RatingBarBigAppTheme=0x7f070008;
-        public static final int RatingBarSmallAppTheme=0x7f070009;
-        public static final int SeekBarAppTheme=0x7f07000a;
-        public static final int SpinnerAppTheme=0x7f07000b;
-        public static final int TabAppTheme=0x7f07000c;
-        public static final int TabTextAppTheme=0x7f07000d;
-        public static final int ToggleAppTheme=0x7f07000e;
-        public static final int _AppTheme=0x7f07000f;
+        public static final int AppBaseTheme=0x7f090010;
+        public static final int AppTheme=0x7f090000;
+        public static final int AutoCompleteTextViewAppTheme=0x7f090001;
+        public static final int ButtonAppTheme=0x7f090002;
+        public static final int ButtonListStyle=0x7f090003;
+        public static final int ButtonStyle=0x7f090004;
+        public static final int ImageButtonAppTheme=0x7f090005;
+        public static final int ProgressBarAppTheme=0x7f090006;
+        public static final int RatingBarAppTheme=0x7f090007;
+        public static final int RatingBarBigAppTheme=0x7f090008;
+        public static final int RatingBarSmallAppTheme=0x7f090009;
+        public static final int SeekBarAppTheme=0x7f09000a;
+        public static final int SpinnerAppTheme=0x7f09000b;
+        public static final int TabAppTheme=0x7f09000c;
+        public static final int TabTextAppTheme=0x7f09000d;
+        public static final int ToggleAppTheme=0x7f09000e;
+        public static final int _AppTheme=0x7f09000f;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a fl_FlatAutoCompleteTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_autoFieldStyle com.example.note:fl_autoFieldStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_borderWidth com.example.note:fl_borderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_textAppearance com.example.note:fl_textAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatAutoCompleteTextView_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatAutoCompleteTextView_fl_autoFieldStyle
+           @see #fl_FlatAutoCompleteTextView_fl_borderWidth
+           @see #fl_FlatAutoCompleteTextView_fl_cornerRadius
+           @see #fl_FlatAutoCompleteTextView_fl_fontExtension
+           @see #fl_FlatAutoCompleteTextView_fl_fontFamily
+           @see #fl_FlatAutoCompleteTextView_fl_fontWeight
+           @see #fl_FlatAutoCompleteTextView_fl_textAppearance
+           @see #fl_FlatAutoCompleteTextView_fl_theme
+         */
+        public static final int[] fl_FlatAutoCompleteTextView = {
+            0x7f010000, 0x7f010001, 0x7f010003, 0x7f010004,
+            0x7f010005, 0x7f010007, 0x7f010008, 0x7f010009
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_autoFieldStyle}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>flat</code></td><td>0</td><td></td></tr>
+<tr><td><code>box</code></td><td>1</td><td></td></tr>
+<tr><td><code>transparent</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_autoFieldStyle
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_autoFieldStyle = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_borderWidth}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_borderWidth
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_borderWidth = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_cornerRadius = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_fontExtension = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_fontFamily = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_fontWeight = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_textAppearance}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>light</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_textAppearance
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_textAppearance = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatAutoCompleteTextView} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatAutoCompleteTextView_fl_theme = 6;
+        /** Attributes that can be used with a fl_FlatButton.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_blockButtonEffectHeight com.example.note:fl_blockButtonEffectHeight}</code></td><td> Defines the height of the border bottom of the button </td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_textAppearance com.example.note:fl_textAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatButton_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatButton_fl_blockButtonEffectHeight
+           @see #fl_FlatButton_fl_cornerRadius
+           @see #fl_FlatButton_fl_fontExtension
+           @see #fl_FlatButton_fl_fontFamily
+           @see #fl_FlatButton_fl_fontWeight
+           @see #fl_FlatButton_fl_textAppearance
+           @see #fl_FlatButton_fl_theme
+         */
+        public static final int[] fl_FlatButton = {
+            0x7f010001, 0x7f010003, 0x7f010004, 0x7f010005,
+            0x7f010007, 0x7f010008, 0x7f01000a
+        };
+        /**
+          <p>
+          @attr description
+           Defines the height of the border bottom of the button 
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          <p>This is a private symbol.
+          @attr name com.example.note:fl_blockButtonEffectHeight
+        */
+        public static final int fl_FlatButton_fl_blockButtonEffectHeight = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatButton_fl_cornerRadius = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatButton_fl_fontExtension = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatButton_fl_fontFamily = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatButton_fl_fontWeight = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_textAppearance}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>light</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_textAppearance
+        */
+        public static final int fl_FlatButton_fl_textAppearance = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatButton} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatButton_fl_theme = 5;
+        /** Attributes that can be used with a fl_FlatCheckBox.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_dotMargin com.example.note:fl_dotMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_size com.example.note:fl_size}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatCheckBox_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatCheckBox_fl_cornerRadius
+           @see #fl_FlatCheckBox_fl_dotMargin
+           @see #fl_FlatCheckBox_fl_fontExtension
+           @see #fl_FlatCheckBox_fl_fontFamily
+           @see #fl_FlatCheckBox_fl_fontWeight
+           @see #fl_FlatCheckBox_fl_size
+           @see #fl_FlatCheckBox_fl_theme
+         */
+        public static final int[] fl_FlatCheckBox = {
+            0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004,
+            0x7f010005, 0x7f010006, 0x7f010008
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatCheckBox_fl_cornerRadius = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_dotMargin}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_dotMargin
+        */
+        public static final int fl_FlatCheckBox_fl_dotMargin = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatCheckBox_fl_fontExtension = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatCheckBox_fl_fontFamily = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatCheckBox_fl_fontWeight = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_size}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_size
+        */
+        public static final int fl_FlatCheckBox_fl_size = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatCheckBox} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatCheckBox_fl_theme = 6;
+        /** Attributes that can be used with a fl_FlatEditText.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_borderWidth com.example.note:fl_borderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_fieldStyle com.example.note:fl_fieldStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_textAppearance com.example.note:fl_textAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatEditText_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatEditText_fl_borderWidth
+           @see #fl_FlatEditText_fl_cornerRadius
+           @see #fl_FlatEditText_fl_fieldStyle
+           @see #fl_FlatEditText_fl_fontExtension
+           @see #fl_FlatEditText_fl_fontFamily
+           @see #fl_FlatEditText_fl_fontWeight
+           @see #fl_FlatEditText_fl_textAppearance
+           @see #fl_FlatEditText_fl_theme
+         */
+        public static final int[] fl_FlatEditText = {
+            0x7f010000, 0x7f010001, 0x7f010003, 0x7f010004,
+            0x7f010005, 0x7f010007, 0x7f010008, 0x7f01000b
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_borderWidth}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_borderWidth
+        */
+        public static final int fl_FlatEditText_fl_borderWidth = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatEditText_fl_cornerRadius = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fieldStyle}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>flat</code></td><td>0</td><td></td></tr>
+<tr><td><code>box</code></td><td>1</td><td></td></tr>
+<tr><td><code>transparent</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_fieldStyle
+        */
+        public static final int fl_FlatEditText_fl_fieldStyle = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatEditText_fl_fontExtension = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatEditText_fl_fontFamily = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatEditText_fl_fontWeight = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_textAppearance}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>none</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>light</code></td><td>2</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_textAppearance
+        */
+        public static final int fl_FlatEditText_fl_textAppearance = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatEditText} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatEditText_fl_theme = 6;
+        /** Attributes that can be used with a fl_FlatRadioButton.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_borderWidth com.example.note:fl_borderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_dotMargin com.example.note:fl_dotMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_size com.example.note:fl_size}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatRadioButton_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatRadioButton_fl_borderWidth
+           @see #fl_FlatRadioButton_fl_dotMargin
+           @see #fl_FlatRadioButton_fl_fontExtension
+           @see #fl_FlatRadioButton_fl_fontFamily
+           @see #fl_FlatRadioButton_fl_fontWeight
+           @see #fl_FlatRadioButton_fl_size
+           @see #fl_FlatRadioButton_fl_theme
+         */
+        public static final int[] fl_FlatRadioButton = {
+            0x7f010000, 0x7f010002, 0x7f010003, 0x7f010004,
+            0x7f010005, 0x7f010006, 0x7f010008
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_borderWidth}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_borderWidth
+        */
+        public static final int fl_FlatRadioButton_fl_borderWidth = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_dotMargin}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_dotMargin
+        */
+        public static final int fl_FlatRadioButton_fl_dotMargin = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatRadioButton_fl_fontExtension = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatRadioButton_fl_fontFamily = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatRadioButton_fl_fontWeight = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_size}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_size
+        */
+        public static final int fl_FlatRadioButton_fl_size = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatRadioButton} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatRadioButton_fl_theme = 6;
+        /** Attributes that can be used with a fl_FlatSeekBar.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatSeekBar_fl_size com.example.note:fl_size}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatSeekBar_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatSeekBar_fl_size
+           @see #fl_FlatSeekBar_fl_theme
+         */
+        public static final int[] fl_FlatSeekBar = {
+            0x7f010006, 0x7f010008
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_size}
+          attribute's value can be found in the {@link #fl_FlatSeekBar} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_size
+        */
+        public static final int fl_FlatSeekBar_fl_size = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatSeekBar} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatSeekBar_fl_theme = 1;
+        /** Attributes that can be used with a fl_FlatTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_backgroundColor com.example.note:fl_backgroundColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_borderWidth com.example.note:fl_borderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_customBackgroundColor com.example.note:fl_customBackgroundColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_fontExtension com.example.note:fl_fontExtension}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_fontFamily com.example.note:fl_fontFamily}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_fontWeight com.example.note:fl_fontWeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_textColor com.example.note:fl_textColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatTextView_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatTextView_fl_backgroundColor
+           @see #fl_FlatTextView_fl_borderWidth
+           @see #fl_FlatTextView_fl_cornerRadius
+           @see #fl_FlatTextView_fl_customBackgroundColor
+           @see #fl_FlatTextView_fl_fontExtension
+           @see #fl_FlatTextView_fl_fontFamily
+           @see #fl_FlatTextView_fl_fontWeight
+           @see #fl_FlatTextView_fl_textColor
+           @see #fl_FlatTextView_fl_theme
+         */
+        public static final int[] fl_FlatTextView = {
+            0x7f010000, 0x7f010001, 0x7f010003, 0x7f010004,
+            0x7f010005, 0x7f010008, 0x7f01000c, 0x7f01000d,
+            0x7f01000e
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_backgroundColor}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>fl_darker</code></td><td>0</td><td></td></tr>
+<tr><td><code>fl_dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>fl_main</code></td><td>2</td><td></td></tr>
+<tr><td><code>fl_light</code></td><td>3</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_backgroundColor
+        */
+        public static final int fl_FlatTextView_fl_backgroundColor = 7;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_borderWidth}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_borderWidth
+        */
+        public static final int fl_FlatTextView_fl_borderWidth = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatTextView_fl_cornerRadius = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_customBackgroundColor}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_customBackgroundColor
+        */
+        public static final int fl_FlatTextView_fl_customBackgroundColor = 8;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontExtension}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontExtension
+        */
+        public static final int fl_FlatTextView_fl_fontExtension = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontFamily}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontFamily
+        */
+        public static final int fl_FlatTextView_fl_fontFamily = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_fontWeight}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_fontWeight
+        */
+        public static final int fl_FlatTextView_fl_fontWeight = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_textColor}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>May be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+<p>May be one of the following constant values.</p>
+<table>
+<colgroup align="left" />
+<colgroup align="left" />
+<colgroup align="left" />
+<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
+<tr><td><code>darker</code></td><td>0</td><td></td></tr>
+<tr><td><code>dark</code></td><td>1</td><td></td></tr>
+<tr><td><code>main</code></td><td>2</td><td></td></tr>
+<tr><td><code>light</code></td><td>3</td><td></td></tr>
+</table>
+          @attr name com.example.note:fl_textColor
+        */
+        public static final int fl_FlatTextView_fl_textColor = 6;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatTextView} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatTextView_fl_theme = 5;
+        /** Attributes that can be used with a fl_FlatToggleButton.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #fl_FlatToggleButton_fl_cornerRadius com.example.note:fl_cornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatToggleButton_fl_space com.example.note:fl_space}</code></td><td></td></tr>
+           <tr><td><code>{@link #fl_FlatToggleButton_fl_theme com.example.note:fl_theme}</code></td><td></td></tr>
+           </table>
+           @see #fl_FlatToggleButton_fl_cornerRadius
+           @see #fl_FlatToggleButton_fl_space
+           @see #fl_FlatToggleButton_fl_theme
+         */
+        public static final int[] fl_FlatToggleButton = {
+            0x7f010001, 0x7f010008, 0x7f01000f
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_cornerRadius}
+          attribute's value can be found in the {@link #fl_FlatToggleButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_cornerRadius
+        */
+        public static final int fl_FlatToggleButton_fl_cornerRadius = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_space}
+          attribute's value can be found in the {@link #fl_FlatToggleButton} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.note:fl_space
+        */
+        public static final int fl_FlatToggleButton_fl_space = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.example.note.R.attr#fl_theme}
+          attribute's value can be found in the {@link #fl_FlatToggleButton} array.
+
+
+          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+          @attr name com.example.note:fl_theme
+        */
+        public static final int fl_FlatToggleButton_fl_theme = 1;
+    };
 }

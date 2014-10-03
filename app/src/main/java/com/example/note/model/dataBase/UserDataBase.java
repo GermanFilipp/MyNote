@@ -7,19 +7,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by gera on 25.09.2014.
  */
-public class UserDataBase extends SQLiteOpenHelper{
+   public final class UserDataBase {
 
-    public UserDataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
+            public UserDataBase() {}
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+            public interface BaseColumns {
+                String _ID = "_id";
+            }
 
-    }
+            public interface TableData extends BaseColumns {
+                String TITLE = "title";
+                String SHORT_CONTENT = "short_content";
+            }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-    }
-}
+        }
+
+
+

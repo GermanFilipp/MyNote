@@ -81,8 +81,8 @@ public class NoteActivity extends Activity {
 
         super.onResume();
 
-        noteAdapter.swapCursor(c);
-        noteAdapter.notifyDataSetChanged();
+     /*   noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();*/
     }
 
     @Override

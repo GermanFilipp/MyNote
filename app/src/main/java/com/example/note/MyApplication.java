@@ -11,10 +11,8 @@ public class MyApplication extends Application {
 	LocalData ld = new LocalData();
     UserDataBaseHelper dataBaseHelper;
     SQLiteDatabase sqLiteDatabase;
-/*    public SQLiteDatabase getSqLiteDatabase(){
-        return sqLiteDatabase;
-    }*/
-	@Override
+
+    @Override
 	public void onCreate() {
 		super.onCreate();
 

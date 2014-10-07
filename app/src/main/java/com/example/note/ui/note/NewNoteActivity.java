@@ -18,6 +18,7 @@ import com.example.note.MyApplication;
 import com.example.note.R;
 import com.example.note.api.APIexception;
 import com.example.note.model.Note;
+import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 import com.example.note.model.dataBase.UserDataBaseHelper;
 
@@ -28,10 +29,6 @@ public class NewNoteActivity extends Activity {
     protected Note note = new Note();
     protected NoteAdapter noteAdapter;
   //  public  UserDataBaseHelper userDataBaseHelper;
-    ContentValues contentValues = new ContentValues();
-   private final static  String [] myContent = {UserDataBase.TableData._ID,
-                                               UserDataBase.TableData.TITLE,
-                                               UserDataBase.TableData.SHORT_CONTENT} ;
 
 
     @Override
@@ -66,14 +63,19 @@ public class NewNoteActivity extends Activity {
                // ((MyApplication) getApplication()).getLocalData().getmNotes().set(intent.getIntExtra("NoteID", -1), new Note(((MyApplication) getApplication()).getLocalData().getmNotes().get(intent.getIntExtra("NoteID", -1)).getTitle(), DESCRIPTION));
 
 
-                UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
-                userDataBaseHelper.getWritableDatabase().replace("TABLE_DATA",null,contentValues);
-                String [] allTable = new String[]{UserDataBase.TableData._ID,
+//                UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
+                ContentValues contentValues = new ContentValues();
+                String[] myContent = {UserDataBase.TableData._ID,
+                        UserDataBase.TableData.TITLE,
+                        UserDataBase.TableData.SHORT_CONTENT};
+
+                getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
+               /* String [] allTable = new String[]{UserDataBase.TableData._ID,
                                                 UserDataBase.TableData.TITLE,
                                                 UserDataBase.TableData.SHORT_CONTENT};
+*/
 
-
-                Cursor c =(userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,allTable,null,null,null,null,"_ID"));
+                //  Cursor c =(userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,allTable,null,null,null,null,"_ID"));
 
                 return true;
 
@@ -144,10 +146,12 @@ public class NewNoteActivity extends Activity {
                     case 0:
 
                        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NewNoteActivity.this);
-
+//?????????
                         contentValues.put(UserDataBase.TableData.TITLE,request.getTitile());
                         contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
                         contentValues.put(UserDataBase.TableData._ID, request.getSessionID());
+
+
                         userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
                         Intent intentLogOut = new Intent(NewNoteActivity.this, NoteActivity.class);
 

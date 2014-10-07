@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +21,7 @@ import com.example.note.R;
 import com.example.note.api.API;
 import com.example.note.api.API.DeleteNoteResponse;
 import com.example.note.api.APIexception;
+import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 import com.example.note.model.dataBase.UserDataBaseHelper;
 import com.example.note.ui.login.MainActivity;
@@ -33,9 +34,10 @@ public class NoteActivity extends Activity {
             UserDataBase.TableData.SHORT_CONTENT};
     public API API = new API();
     public UserDataBaseHelper userDataBaseHelper;
+
     protected NoteAdapter noteAdapter;
-    protected Button buttonDelete;
     protected ListView lv;
+
     Cursor c;
 
     @Override
@@ -48,30 +50,30 @@ public class NoteActivity extends Activity {
         noteAdapter = new NoteAdapter(this, c);
 
         lv = (ListView) findViewById(R.id.list);
+
         lv.setAdapter(noteAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id) {
-                Intent intent = new Intent(NoteActivity.this, EditNoteActivity.class);
 
+                Intent intent = new Intent(NoteActivity.this, EditNoteActivity.class);
                 intent.putExtra(INT_EXTRA, position);
                 intent.putExtra(LONG_EXTRA, id);
-
                 startActivity(intent);
+
+
             }
+
+
         });
 
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
+        noteAdapter.setOnDeleteClickListener(new NoteAdapter.OnDeleteItemListner() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), id));
-                new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
-
-                return true;
+            public void onItemDeleteClick(long id) {
+                if (new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), id)) != null) {
+                    new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
+                }
             }
         });
     }
@@ -80,9 +82,8 @@ public class NoteActivity extends Activity {
     protected void onResume() {
 
         super.onResume();
-
-     /*   noteAdapter.swapCursor(c);
-        noteAdapter.notifyDataSetChanged();*/
+        noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -113,10 +114,6 @@ public class NoteActivity extends Activity {
         }
     }
 
-    public void ClicButton(View v) {
-        Toast.makeText(this, "Delete note", Toast.LENGTH_SHORT).show();
-
-    }
 
     public class NotesList {
         private String sessionID;
@@ -165,22 +162,21 @@ public class NoteActivity extends Activity {
 
                         if (result.getNotesArray() != null) {
 
-
-                            for (com.example.note.api.API.NoteResponse item : result.getNotesArray()) {
-
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put(UserDataBase.TableData._ID, item.noteID);
-                                contentValues.put(UserDataBase.TableData.TITLE, item.title);
-                                contentValues.put(UserDataBase.TableData.SHORT_CONTENT, item.shortContent);
-
-                                userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
-
+                            ContentValues[] contentValues = new ContentValues[result.getNotesArray().size()];
+                            for (int i = 0; i < contentValues.length; i++) {
+                                contentValues[i] = new ContentValues();
+                                contentValues[i].put(UserDataBase.TableData._ID, result.getNotesArray().get(i).noteID);
+                                contentValues[i].put(UserDataBase.TableData.TITLE, result.getNotesArray().get(i).title);
+                                contentValues[i].put(UserDataBase.TableData.SHORT_CONTENT, result.getNotesArray().get(i).shortContent);
                             }
+
+                            getContentResolver().bulkInsert(DataBaseContentProvider.URI_NOTE, contentValues);
+                        }
+
+
                             c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
                             noteAdapter.swapCursor(c);
 
-
-                        }
 
                         break;
 
@@ -253,11 +249,8 @@ public class NoteActivity extends Activity {
                     case 0:
                         ContentValues contentValues = new ContentValues();
                         UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NoteActivity.this);
-                        contentValues.remove(UserDataBase.TableData._ID/*, request.getNoteID()*/);
-
-
+                        contentValues.remove(UserDataBase.TableData._ID);
                         userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
-
                         noteAdapter.swapCursor(c);
                         noteAdapter.notifyDataSetChanged();
                         break;

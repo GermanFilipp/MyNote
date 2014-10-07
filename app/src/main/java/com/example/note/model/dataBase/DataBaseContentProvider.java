@@ -17,34 +17,28 @@ import java.util.ArrayList;
  * Created by gera on 28.09.2014.
  */
 public class DataBaseContentProvider extends ContentProvider {
-    private UserDataBaseHelper userDataBaseHelper;
-
     // All URIs share these parts
-    public static final String AUTHORITY = "com.exemple.note";
+    public static final String AUTHORITY = "com.example.note";
     public static final String SCHEME = "content://";
-
     // URIs
-    public static final Uri URI_A = Uri.parse(SCHEME + AUTHORITY + "/" + Tables.TABLE_DATA); // FIXME use buildUpon method here
-    private enum QueryId {
-        NONE,
-
-        QUERY_TABLE_DATA
-
-    };
+    public static final Uri URI_NOTE = Uri.parse(SCHEME + AUTHORITY + "/" + Tables.TABLE_DATA); // FIXME use buildUpon method here
     private static final UriMatcher sURIMatcher = new UriMatcher(
             UriMatcher.NO_MATCH);
+
     static {
         addURI(Tables.TABLE_DATA, QueryId.QUERY_TABLE_DATA);
 
-    }
-   private static void addURI(String uri, QueryId query){
-       sURIMatcher.addURI(AUTHORITY,uri,query.ordinal());
-   }
-    private static QueryId matchQuery(Uri uri){
-        int id = sURIMatcher.match(uri);
-        return id == -1 ? QueryId.NONE:QueryId.values()[id];
+    };
+    private UserDataBaseHelper userDataBaseHelper;
+
+    private static void addURI(String uri, QueryId query) {
+        sURIMatcher.addURI(AUTHORITY, uri, query.ordinal());
     }
 
+    private static QueryId matchQuery(Uri uri) {
+        int id = sURIMatcher.match(uri);
+        return id == -1 ? QueryId.NONE : QueryId.values()[id];
+    }
 
     @Override
     public boolean onCreate() {
@@ -63,9 +57,6 @@ public class DataBaseContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
 
         }
-    }
-    private void notifyURI(Uri uri) {
-        getContext().getContentResolver().notifyChange(uri, null);
     }
 
     @Override
@@ -97,7 +88,7 @@ public class DataBaseContentProvider extends ContentProvider {
             case QUERY_TABLE_DATA:
                 id = db.insertOrThrow(Tables.TABLE_DATA, null, values);
                 // FIXME use buildUpon method here
-                result = Uri.parse(URI_A + "/" + id);
+                result = Uri.parse(URI_NOTE + "/" + id);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -181,5 +172,12 @@ public class DataBaseContentProvider extends ContentProvider {
         } finally {
             db.endTransaction();
         }
+    }
+
+    private enum QueryId {
+        NONE,
+
+        QUERY_TABLE_DATA
+
     }
 }

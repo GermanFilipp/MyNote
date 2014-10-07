@@ -39,6 +39,10 @@
             android:name=".ui.note.EditNoteActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <provider
+            android:name="com.example.note.model.dataBase.DataBaseContentProvider"
+            android:authorities="com.example.note"></provider>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

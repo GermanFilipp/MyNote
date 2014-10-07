@@ -399,14 +399,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020079;
     }
     public static final class id {
-        public static final int action_add=0x7f050020;
-        public static final int action_changePassword=0x7f050021;
-        public static final int action_edit_note=0x7f05001f;
-        public static final int action_logOut=0x7f050022;
-        public static final int action_save_new_note=0x7f050023;
+        public static final int action_add=0x7f050021;
+        public static final int action_changePassword=0x7f050022;
+        public static final int action_edit_note=0x7f050020;
+        public static final int action_logOut=0x7f050023;
+        public static final int action_save_new_note=0x7f050024;
         public static final int activity_name=0x7f05000c;
         public static final int box=0x7f050004;
-        public static final int button1=0x7f050015;
+        public static final int button1=0x7f050016;
         public static final int buttonEnterChenge=0x7f050011;
         public static final int changePassword=0x7f05000d;
         public static final int dark=0x7f050001;
@@ -417,23 +417,24 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int fl_light=0x7f05000b;
         public static final int fl_main=0x7f05000a;
         public static final int flat=0x7f050003;
+        public static final int imgBtn=0x7f050015;
         public static final int light=0x7f050002;
-        public static final int list=0x7f05001d;
-        public static final int listViewNote=0x7f05001c;
-        public static final int logText=0x7f050017;
+        public static final int list=0x7f05001e;
+        public static final int listViewNote=0x7f05001d;
+        public static final int logText=0x7f050018;
         public static final int main=0x7f050007;
-        public static final int newNote=0x7f050019;
+        public static final int newNote=0x7f05001a;
         public static final int newPassword=0x7f05000f;
         public static final int none=0x7f050000;
         public static final int noteName=0x7f050013;
         public static final int noteSubtitle=0x7f050014;
         public static final int oldPassword=0x7f05000e;
-        public static final int passText=0x7f050016;
+        public static final int passText=0x7f050017;
         public static final int reenterPassword=0x7f050010;
-        public static final int repeatPassText=0x7f05001e;
-        public static final int textNote=0x7f05001b;
-        public static final int textView1=0x7f050018;
-        public static final int titleNote=0x7f05001a;
+        public static final int repeatPassText=0x7f05001f;
+        public static final int textNote=0x7f05001c;
+        public static final int textView1=0x7f050019;
+        public static final int titleNote=0x7f05001b;
         public static final int transparent=0x7f050005;
     }
     public static final class layout {

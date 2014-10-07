@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.note.api.API.EditNoteResponse;
 import com.example.note.MyApplication;
 import com.example.note.R;
@@ -39,10 +40,8 @@ public class EditNoteActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-      /* UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
-        c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);*/
-       /* noteAdapter.swapCursor(c);
-        noteAdapter.notifyDataSetChanged();*/
+        noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -50,12 +49,11 @@ public class EditNoteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_note);
         editNote = (EditText) findViewById(R.id.editNote);
-        //noteAdapter = new NoteAdapter(this, ((MyApplication)getApplication()).getSqLiteDatabase());
-
         UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
-        noteAdapter = new NoteAdapter(this, c = (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, "_ID")));
+        noteAdapter = new NoteAdapter(this, c = (userDataBaseHelper
+                .getReadableDatabase()
+                .query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, "_ID")));
         new GetNoteAsyncTask().execute(new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
-
     }
 
     @Override
@@ -63,29 +61,30 @@ public class EditNoteActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.edit_note_menu, menu);
         return true;
-    };
+    }
+
+    ;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_note:
-
                 new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
                         editNote.getText().toString()));
-                Intent intent = new Intent(this, NoteActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                startActivity(intent);
-
-
+                Intent intentLogOut = new Intent(EditNoteActivity.this, NoteActivity.class);
+                intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogOut);
+                noteAdapter.swapCursor(c);
+                noteAdapter.notifyDataSetChanged();
                 finish();
                 break;
-
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
-    };
+    }
+
+    ;
 
     public class GetNote {
         private long noteID;
@@ -103,17 +102,19 @@ public class EditNoteActivity extends Activity {
         public String getSessionID() {
             return sessionID;
         }
-    };
+    }
 
-    public class EditNote{
+    ;
+
+    public class EditNote {
         private long noteID;
         private String sessionID;
         private String text;
 
         public EditNote(String _sessionID, long _noteID, String _text) {
-            noteID    = _noteID;
+            noteID = _noteID;
             sessionID = _sessionID;
-            text      = _text;
+            text = _text;
         }
 
         public long getNoteID() {
@@ -128,6 +129,7 @@ public class EditNoteActivity extends Activity {
             return text;
         }
     }
+
     public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {
         UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(EditNoteActivity.this);
         APIexception apiexception;
@@ -140,18 +142,11 @@ public class EditNoteActivity extends Activity {
 
         @Override
         protected EditNoteResponse doInBackground(EditNote... params) {
-
-
             try {
-
-
                 contentValues.put(UserDataBase.TableData._ID, params[0].getNoteID());
                 contentValues.put(UserDataBase.TableData.TITLE, params[0].text);
-
-
                 userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
                 c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
-
                 noteAdapter.swapCursor(c);
                 noteAdapter.notifyDataSetChanged();
                 return API.getEditNote(params[0].sessionID, params[0].noteID, params[0].text);
@@ -159,69 +154,55 @@ public class EditNoteActivity extends Activity {
                 apiexception = e;
                 e.printStackTrace();
             }
-
             return null;
         }
 
         @Override
         protected void onPostExecute(EditNoteResponse result) {
             super.onPostExecute(result);
-
-
-
             if (result == null) {
-
             } else {
                 switch (result.result) {
                     case 0:
-
-
 
                         Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();
                         break;
-
                     case 2:
-
                         Toast toast1 = Toast.makeText(EditNoteActivity.this, "problem", Toast.LENGTH_LONG);
                         toast1.setGravity(Gravity.BOTTOM, 10, 50);
                         toast1.show();
-
                         break;
-
                     default:
-
                         Toast toast2 = Toast.makeText(EditNoteActivity.this, "error", Toast.LENGTH_LONG);
                         toast2.setGravity(Gravity.BOTTOM, 10, 50);
                         toast2.show();
-
                         break;
                 }
             }
         }
     }
 
+    public class EditNoteRequest {
+        public long noteID;
+        public String sessionID;
+        public String text;
 
-     public class EditNoteRequest{
-         public long noteID;
-         public String sessionID;
-         public String text;
+        public EditNoteRequest(String _sessionID, long _noteID, String _text) {
+            noteID = _noteID;
+            sessionID = _sessionID;
+            text = _text;
+        }
+    }
 
-         public EditNoteRequest(String _sessionID, long _noteID, String _text){
-             noteID 	  = _noteID;
-             sessionID = _sessionID;
-             text      = _text;
-         }
-     }
     public class GetNoteAsyncTask extends AsyncTask<GetNote, Void, API.GetNoteResponse> {
-
         APIexception apiexception;
         GetNote request;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -232,7 +213,6 @@ public class EditNoteActivity extends Activity {
                 return API.getNote(params[0].sessionID, params[0].noteID);
             } catch (APIexception e) {
                 apiexception = e;
-
                 e.printStackTrace();
             }
             return null;
@@ -241,47 +221,29 @@ public class EditNoteActivity extends Activity {
         @Override
         protected void onPostExecute(API.GetNoteResponse result) {
             super.onPostExecute(result);
-
-
-
-            if(result == null){
-              //  APIUtils.ToastException(EditNoteActivity.this, apiexception);
-            }else{
-                switch(result.result) {
+            if (result == null) {
+// APIUtils.ToastException(EditNoteActivity.this, apiexception);
+            } else {
+                switch (result.result) {
                     case 0:
-
-
-                       getActionBar().setTitle(result.getTitle());
+                        getActionBar().setTitle(result.getTitle());
                         editNote.setText(result.getContent());
-
-
                         Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();
-
-
-
                         break;
-
                     case 2:
-
                         Toast toast1 = Toast.makeText(EditNoteActivity.this, "problems", Toast.LENGTH_LONG);
                         toast1.setGravity(Gravity.BOTTOM, 10, 50);
                         toast1.show();
-
                         break;
-
                     default:
-
                         Toast toast2 = Toast.makeText(EditNoteActivity.this, "error", Toast.LENGTH_LONG);
                         toast2.setGravity(Gravity.BOTTOM, 10, 50);
                         toast2.show();
-
                         break;
                 }
             }
         }
     }
-
 }
-

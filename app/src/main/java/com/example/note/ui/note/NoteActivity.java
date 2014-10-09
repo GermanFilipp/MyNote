@@ -1,7 +1,10 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -12,7 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,30 +26,64 @@ import com.example.note.api.API.DeleteNoteResponse;
 import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
-import com.example.note.model.dataBase.UserDataBaseHelper;
+
 import com.example.note.ui.login.MainActivity;
 
 public class NoteActivity extends Activity {
     private static final String LONG_EXTRA = "ID";
     private static final String INT_EXTRA = "POSITION";
-    private static final String[] myContent = {UserDataBase.TableData._ID,
-            UserDataBase.TableData.TITLE,
-            UserDataBase.TableData.SHORT_CONTENT};
+
     public API API = new API();
-    public UserDataBaseHelper userDataBaseHelper;
+
 
     protected NoteAdapter noteAdapter;
     protected ListView lv;
-
-    Cursor c;
+    protected AlertDialog.Builder alertDialog;
+    Context context;
+    long lastDeleteId;
+    private Cursor c;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_activity);
         new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
-        userDataBaseHelper = new UserDataBaseHelper(this);
-        c = (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, "_ID"));
+
+        String buttonOK = "Ок";
+        String buttonCancel = "Отмена";
+        String title = "Удаление";
+        String message = "Удалить запись?";
+
+        context = NoteActivity.this;
+        alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(title);  // заголовок
+        alertDialog.setMessage(message); // сообщение
+        alertDialog.setPositiveButton(buttonOK, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId));
+               /* Toast.makeText(context, "Вы сделали правильный выбор",
+                        Toast.LENGTH_LONG).show();*/
+            }
+        });
+        alertDialog.setNegativeButton(buttonCancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                /*Toast.makeText(context, "Возможно вы правы", Toast.LENGTH_LONG)
+                        .show();*/
+            }
+        });
+        alertDialog.setCancelable(true);
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(context, "Вы ничего не выбрали",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        String[] myContent = {UserDataBase.TableData._ID,
+                UserDataBase.TableData.TITLE,
+                UserDataBase.TableData.SHORT_CONTENT};
+        c = getContentResolver().query(DataBaseContentProvider.URI_NOTE, myContent, null, null, "_ID");
         noteAdapter = new NoteAdapter(this, c);
 
         lv = (ListView) findViewById(R.id.list);
@@ -71,9 +108,9 @@ public class NoteActivity extends Activity {
         noteAdapter.setOnDeleteClickListener(new NoteAdapter.OnDeleteItemListner() {
             @Override
             public void onItemDeleteClick(long id) {
-                if (new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), id)) != null) {
-                    new MyNotesListAsyncTask().execute(new NotesList(((MyApplication) getApplication()).getLocalData().getSessionID()));
-                }
+                lastDeleteId = id;
+                alertDialog.show();
+
             }
         });
     }
@@ -82,8 +119,9 @@ public class NoteActivity extends Activity {
     protected void onResume() {
 
         super.onResume();
-        noteAdapter.swapCursor(c);
+
         noteAdapter.notifyDataSetChanged();
+        noteAdapter.swapCursor(c);
     }
 
     @Override
@@ -108,6 +146,7 @@ public class NoteActivity extends Activity {
             case R.id.action_add:
                 Intent intentAdd = new Intent(this, NewNoteActivity.class);
                 startActivity(intentAdd);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,9 +161,7 @@ public class NoteActivity extends Activity {
             sessionID = _sessionID;
         }
 
-        public String getSessionID() {
-            return sessionID;
-        }
+
     }
 
     public class MyNotesListAsyncTask extends AsyncTask<NotesList, Void, API.GetNotesListResponse> {
@@ -143,6 +180,7 @@ public class NoteActivity extends Activity {
 
 
             try {
+
                 return API.getNotesList(params[0].sessionID);
             } catch (APIexception apIexception) {
                 apIexception.printStackTrace();
@@ -172,11 +210,6 @@ public class NoteActivity extends Activity {
 
                             getContentResolver().bulkInsert(DataBaseContentProvider.URI_NOTE, contentValues);
                         }
-
-
-                            c = userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA, myContent, null, null, null, null, UserDataBaseHelper._ID);
-                            noteAdapter.swapCursor(c);
-
 
                         break;
 
@@ -220,6 +253,7 @@ public class NoteActivity extends Activity {
         DeleteRequest request;
         APIexception apiexception;
 
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -247,12 +281,9 @@ public class NoteActivity extends Activity {
             if (result != null) {
                 switch (result.result) {
                     case 0:
-                        ContentValues contentValues = new ContentValues();
-                        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NoteActivity.this);
-                        contentValues.remove(UserDataBase.TableData._ID);
-                        userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
-                        noteAdapter.swapCursor(c);
+                        getContentResolver().delete(DataBaseContentProvider.URI_NOTE, UserDataBase.TableData._ID + " = " + request.getNoteID(), null);
                         noteAdapter.notifyDataSetChanged();
+                        noteAdapter.swapCursor(c);
                         break;
 
                     case 2:
@@ -320,12 +351,9 @@ public class NoteActivity extends Activity {
                         Toast toast = Toast.makeText(NoteActivity.this, "Log Out Success", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();
-
-
                         break;
 
                     case 1:
-
                         Toast toast1 = Toast.makeText(NoteActivity.this, "Log Out not compleate", Toast.LENGTH_LONG);
                         toast1.setGravity(Gravity.BOTTOM, 10, 50);
                         toast1.show();

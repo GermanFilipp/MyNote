@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,13 +24,15 @@ import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 import com.example.note.model.dataBase.UserDataBaseHelper;
 
+import java.net.URI;
+
 public class NewNoteActivity extends Activity {
     public API API;
     protected EditText textNote;
     protected EditText titleNote;
-    protected Note note = new Note();
+    //protected Note note = new Note();
     protected NoteAdapter noteAdapter;
-  //  public  UserDataBaseHelper userDataBaseHelper;
+    private Cursor c;
 
 
     @Override
@@ -36,12 +40,21 @@ public class NewNoteActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_note_activity);
         API = new API();
-
-        UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
-        noteAdapter = new NoteAdapter(this, (userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,myContent,null,null,null,null,"_ID")));
+        String[] myContent = {UserDataBase.TableData._ID,
+                UserDataBase.TableData.TITLE,
+                UserDataBase.TableData.SHORT_CONTENT};
+        c = (getContentResolver().query(DataBaseContentProvider.URI_NOTE, myContent, null, null, "_ID"));
+        noteAdapter = new NoteAdapter(this, c);
 
         textNote  = (EditText) findViewById(R.id.textNote);
         titleNote = (EditText) findViewById(R.id.titleNote);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        noteAdapter.swapCursor(c);
+        noteAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -52,6 +65,8 @@ public class NewNoteActivity extends Activity {
 
     }
 
+    @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
         final String NOTE_TITLE_NOTE = titleNote.getText().toString();
         final String NOTE            = textNote.getText().toString();
@@ -60,24 +75,9 @@ public class NewNoteActivity extends Activity {
             case R.id.action_save_new_note:
                 new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
 
-               // ((MyApplication) getApplication()).getLocalData().getmNotes().set(intent.getIntExtra("NoteID", -1), new Note(((MyApplication) getApplication()).getLocalData().getmNotes().get(intent.getIntExtra("NoteID", -1)).getTitle(), DESCRIPTION));
-
-
-//                UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(this);
-                ContentValues contentValues = new ContentValues();
-                String[] myContent = {UserDataBase.TableData._ID,
-                        UserDataBase.TableData.TITLE,
-                        UserDataBase.TableData.SHORT_CONTENT};
-
-                getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
-               /* String [] allTable = new String[]{UserDataBase.TableData._ID,
-                                                UserDataBase.TableData.TITLE,
-                                                UserDataBase.TableData.SHORT_CONTENT};
-*/
-
-                //  Cursor c =(userDataBaseHelper.getReadableDatabase().query(UserDataBaseHelper.Tables.TABLE_DATA,allTable,null,null,null,null,"_ID"));
 
                 return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -114,12 +114,7 @@ public class NewNoteActivity extends Activity {
         NoteCreate request;
         APIexception apiexception;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
 
-
-        }
 
         @Override
         protected com.example.note.api.API.CreateNoteResponse doInBackground(NoteCreate... params) {
@@ -145,23 +140,18 @@ public class NewNoteActivity extends Activity {
                 switch(result.getCreateNote()) {
                     case 0:
 
-                       UserDataBaseHelper userDataBaseHelper = new UserDataBaseHelper(NewNoteActivity.this);
-//?????????
-                        contentValues.put(UserDataBase.TableData.TITLE,request.getTitile());
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(UserDataBase.TableData.TITLE, request.getTitile());
                         contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
-                        contentValues.put(UserDataBase.TableData._ID, request.getSessionID());
+                        contentValues.put(UserDataBase.TableData._ID, result.getNoteID()  /* request.getSessionID()*/);
+                        getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
+                        noteAdapter.swapCursor(c);
 
 
-                        userDataBaseHelper.getWritableDatabase().replace(UserDataBaseHelper.Tables.TABLE_DATA, null, contentValues);
                         Intent intentLogOut = new Intent(NewNoteActivity.this, NoteActivity.class);
-
                         intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentLogOut);
-                        noteAdapter.notifyDataSetChanged();
 
-                        Toast toast = Toast.makeText(NewNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.BOTTOM, 10, 50);
-                        toast.show();
                         break;
 
                     case 1:

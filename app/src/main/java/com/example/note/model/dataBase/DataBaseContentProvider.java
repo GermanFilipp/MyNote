@@ -79,26 +79,6 @@ public class DataBaseContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        Uri result;
-        SQLiteDatabase db = userDataBaseHelper.getWritableDatabase();
-        long id = 0;
-        // FIXME can be reworked with method in enum
-        switch (matchQuery(uri)) {
-            case QUERY_TABLE_DATA:
-                id = db.insertOrThrow(Tables.TABLE_DATA, null, values);
-                // FIXME use buildUpon method here
-                result = Uri.parse(URI_NOTE + "/" + id);
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
-
-        getContext().getContentResolver().notifyChange(uri, null);
-        return result;
-    }
-
-    @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = userDataBaseHelper.getWritableDatabase();
         final SelectionBuilder builder = buildSimpleSelection(uri);
@@ -133,6 +113,73 @@ public class DataBaseContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
+
+    @Override
+  /*  public Uri insert(Uri uri, ContentValues values) {
+        Uri result;
+        SQLiteDatabase db = userDataBaseHelper.getWritableDatabase();
+        long id = 0;
+        // FIXME can be reworked with method in enum
+        switch (matchQuery(uri)) {
+            case QUERY_TABLE_DATA:
+                id = db.insertOrThrow(Tables.TABLE_DATA, null, values);
+                // FIXME use buildUpon method here
+                result = Uri.parse(URI_NOTE + "/" + id);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return result;
+    }*/
+
+
+    public Uri insert(Uri uri, ContentValues values) {
+        Uri result;
+        String table = Tables.TABLE_DATA;
+        final SQLiteDatabase db = userDataBaseHelper.getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            try {
+                long id = db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                result = Uri.parse(URI_NOTE + "/" + id);
+            } catch (SQLiteConstraintException e) {
+                throw e;
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return result;
+    }
+/* public Uri insert(Uri uri, ContentValues values) {
+    Uri result;
+
+	Log.d(TAG, uri.toString());
+	Log.d(TAG, values.toString());
+
+	SQLiteDatabase db = mDatabaseHelper.getWritableDatabase();
+
+	long id = 0;
+
+	switch (matchQuery(uri)) {
+	case DB_NOTE:
+	    id = db.insertOrThrow(DBNote.TABLE_NAME, null, values);
+	    result = Uri.parse(URI_NOTE_TABLE + "/" + id);
+	    break;
+
+	default:
+	    throw new UnsupportedOperationException("Unknown uri: " + uri);
+	}
+	getContext().getContentResolver().notifyChange(uri, null);
+
+	return result;
+    }*/
 
     public final int bulkInsert(Uri url, ContentValues[] values) {
         int result = 0;

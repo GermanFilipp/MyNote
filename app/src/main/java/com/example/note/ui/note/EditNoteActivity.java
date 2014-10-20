@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,17 +13,13 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.note.api.API.EditNoteResponse;
 import com.example.note.MyApplication;
 import com.example.note.R;
 import com.example.note.api.API;
+import com.example.note.api.API.EditNoteResponse;
 import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
-import com.example.note.model.dataBase.UserDataBaseHelper;
-import com.example.note.ui.note.NoteActivity;
-
-import static com.example.note.ui.note.NoteActivity.*;
 
 public class EditNoteActivity extends Activity {
 
@@ -53,7 +48,7 @@ public class EditNoteActivity extends Activity {
                 UserDataBase.TableData.TITLE,
                 UserDataBase.TableData.SHORT_CONTENT};
         getContentResolver().query(DataBaseContentProvider.URI_NOTE, myContent, null, null, "_ID");
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         new GetNoteAsyncTask().execute(new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
     }
@@ -67,18 +62,24 @@ public class EditNoteActivity extends Activity {
 
     ;
 
+    public void backPreasd() {
+        Intent intentLogOut = new Intent(EditNoteActivity.this, NoteActivity.class);
+        intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intentLogOut);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_note:
                 new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
                         editNote.getText().toString()));
-                Intent intentLogOut = new Intent(EditNoteActivity.this, NoteActivity.class);
-                intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intentLogOut);
 
+                backPreasd();
                 finish();
                 break;
+            case android.R.id.home:
+                backPreasd();
+                return true;
             default:
                 break;
         }
@@ -225,12 +226,13 @@ public class EditNoteActivity extends Activity {
         protected void onPostExecute(API.GetNoteResponse result) {
             super.onPostExecute(result);
             if (result == null) {
-// APIUtils.ToastException(EditNoteActivity.this, apiexception);
+
             } else {
                 switch (result.result) {
                     case 0:
                         getActionBar().setTitle(result.getTitle());
                         editNote.setText(result.getContent());
+
                         Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.BOTTOM, 10, 50);
                         toast.show();

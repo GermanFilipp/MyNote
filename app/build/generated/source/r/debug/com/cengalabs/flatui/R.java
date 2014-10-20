@@ -68,26 +68,26 @@ public final class R {
 		public static final int grass_darker = 0x7f06001a;
 		public static final int grass_light = 0x7f06001b;
 		public static final int grass_primary = 0x7f06001c;
-		public static final int orange_dark = 0x7f06001d;
-		public static final int orange_darker = 0x7f06001e;
-		public static final int orange_light = 0x7f06001f;
-		public static final int orange_primary = 0x7f060020;
-		public static final int sand_dark = 0x7f060021;
-		public static final int sand_darker = 0x7f060022;
-		public static final int sand_light = 0x7f060023;
-		public static final int sand_primary = 0x7f060024;
-		public static final int sea_dark = 0x7f060025;
-		public static final int sea_darker = 0x7f060026;
-		public static final int sea_light = 0x7f060027;
-		public static final int sea_primary = 0x7f060028;
-		public static final int sky_dark = 0x7f060029;
-		public static final int sky_darker = 0x7f06002a;
-		public static final int sky_light = 0x7f06002b;
-		public static final int sky_primary = 0x7f06002c;
-		public static final int snow_dark = 0x7f06002d;
-		public static final int snow_darker = 0x7f06002e;
-		public static final int snow_light = 0x7f06002f;
-		public static final int snow_primary = 0x7f060030;
+		public static final int orange_dark = 0x7f06001f;
+		public static final int orange_darker = 0x7f060020;
+		public static final int orange_light = 0x7f060021;
+		public static final int orange_primary = 0x7f060022;
+		public static final int sand_dark = 0x7f060023;
+		public static final int sand_darker = 0x7f060024;
+		public static final int sand_light = 0x7f060025;
+		public static final int sand_primary = 0x7f060026;
+		public static final int sea_dark = 0x7f060027;
+		public static final int sea_darker = 0x7f060028;
+		public static final int sea_light = 0x7f060029;
+		public static final int sea_primary = 0x7f06002a;
+		public static final int sky_dark = 0x7f06002b;
+		public static final int sky_darker = 0x7f06002c;
+		public static final int sky_light = 0x7f06002d;
+		public static final int sky_primary = 0x7f06002e;
+		public static final int snow_dark = 0x7f06002f;
+		public static final int snow_darker = 0x7f060030;
+		public static final int snow_light = 0x7f060031;
+		public static final int snow_primary = 0x7f060032;
 	}
 	public static final class id {
 		public static final int box = 0x7f050004;
@@ -104,7 +104,7 @@ public final class R {
 		public static final int transparent = 0x7f050005;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f080007;
+		public static final int app_name = 0x7f080009;
 	}
 	public static final class styleable {
 		public static final int[] fl_FlatAutoCompleteTextView = { 0x7f010000, 0x7f010001, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010007, 0x7f010008, 0x7f010009 };

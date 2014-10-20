@@ -1,13 +1,13 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,25 +15,21 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.note.api.API;
 import com.example.note.MyApplication;
 import com.example.note.R;
+import com.example.note.api.API;
 import com.example.note.api.APIexception;
-import com.example.note.model.Note;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
-import com.example.note.model.dataBase.UserDataBaseHelper;
-
-import java.net.URI;
 
 public class NewNoteActivity extends Activity {
     public API API;
+    public String KEY = "123";
     protected EditText textNote;
     protected EditText titleNote;
     //protected Note note = new Note();
     protected NoteAdapter noteAdapter;
     private Cursor c;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +44,11 @@ public class NewNoteActivity extends Activity {
 
         textNote  = (EditText) findViewById(R.id.textNote);
         titleNote = (EditText) findViewById(R.id.titleNote);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Bundle bndl = new Bundle();
+        bndl.putSerializable(KEY, NoteCreate);
+
     }
 
     @Override
@@ -78,11 +79,17 @@ public class NewNoteActivity extends Activity {
 
                 return true;
 
-
+            case android.R.id.home:
+                Intent intentLogOut = new Intent(NewNoteActivity.this, NoteActivity.class);
+                intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogOut);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
     public class NoteCreate {
         private String sessionID;
         private String title;
@@ -107,9 +114,22 @@ public class NewNoteActivity extends Activity {
         }
     }
 
+
+    public class NoteCreateLoader extends AsyncTaskLoader<API.CreateNoteResponse> {
+
+        public NoteCreateLoader(Context context, NoteCreate noteCreate) {
+            super(context);
+            this.noteCreate = noteCreate;
+        }
+
+        @Override
+        public API.CreateNoteResponse loadInBackground() {
+            return null;
+        }
+    }
+
+
     public class MyAsyncTask extends AsyncTask<NoteCreate, Void, com.example.note.api.API.CreateNoteResponse> {
-
-
 
         NoteCreate request;
         APIexception apiexception;

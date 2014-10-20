@@ -19,39 +19,38 @@ import com.example.note.utils.UiUtils;
 
 public class RegistrationFragment extends Fragment implements View.OnClickListener {
 
-	private EditText LogText;
-	private EditText PassText;
-	private EditText RepeatPassText;
     MyAsyncTask mt;
-	private Button Registration;
+    API api = new API();
+    MainActivity m = new MainActivity();
+    private EditText LogText;
+    private EditText PassText;
+    private EditText RepeatPassText;
+    private Button Registration;
 
-	API api = new API();
-	MainActivity m = new MainActivity();
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstance) {
-		return inflater.inflate(R.layout.register_frag, container, false);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstance) {
+        return inflater.inflate(R.layout.register_frag, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle saveInstanceState) {
-		super.onViewCreated(view, saveInstanceState);
+    @Override
+    public void onViewCreated(View view, Bundle saveInstanceState) {
+        super.onViewCreated(view, saveInstanceState);
 
-		LogText        = (EditText) view.findViewById(R.id.logText);
-		PassText       = (EditText) view.findViewById(R.id.passText);
-		RepeatPassText = (EditText) view.findViewById(R.id.repeatPassText);
-		Registration   = (Button) view.findViewById(R.id.button1);
-		Registration.setOnClickListener(this);
-		
-	}
+        LogText = (EditText) view.findViewById(R.id.logText);
+        PassText = (EditText) view.findViewById(R.id.passText);
+        RepeatPassText = (EditText) view.findViewById(R.id.repeatPassText);
+        Registration = (Button) view.findViewById(R.id.button1);
+        Registration.setOnClickListener(this);
 
-	public void onClick(View arg0) {
+    }
+
+    public void onClick(View arg0) {
         final String LOGIN = LogText.getText().toString();
-        final String PASS  = PassText.getText().toString();
+        final String PASS = PassText.getText().toString();
         final String REPEATPASS = RepeatPassText.getText().toString();
-        if (PASS.equals(REPEATPASS) && !TextUtils.isEmpty(LOGIN)&& !TextUtils.isEmpty(PASS) && !TextUtils.isEmpty(REPEATPASS)) {
-            new MyAsyncTask().execute(new LoginRequest(LOGIN,PASS));
+        if (PASS.equals(REPEATPASS) && !TextUtils.isEmpty(LOGIN) && !TextUtils.isEmpty(PASS) && !TextUtils.isEmpty(REPEATPASS)) {
+            new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
 
 
 //			Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -61,22 +60,25 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         Registration.setEnabled(true);
         Registration.setEnabled(false);
 
-        new MyAsyncTask().execute(new LoginRequest(LOGIN,PASS));
+        new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
 
 
-	}
-    public static class LoginRequest{
+    }
 
-        String login ="";
+    public static class LoginRequest {
+
+        String login = "";
         String pass = "";
-        public LoginRequest(String l,String p) {
-            login = l ;
-            pass = p ;
+
+        public LoginRequest(String l, String p) {
+            login = l;
+            pass = p;
 
         }
     }
+
     public class MyAsyncTask extends AsyncTask<LoginRequest, Void, API.RegistesResponse> {
-        APIexception excep ;
+        APIexception excep;
 
         @Override
         protected API.RegistesResponse doInBackground(LoginRequest... params) {
@@ -92,25 +94,25 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         }
 
 
-
         protected void onPostExecute(API.RegistesResponse result) {
             super.onPostExecute(result);
 
 
-            if(result != null) {
+            if (result != null) {
                 if (result.result == 0) {
                     Toast toast = Toast.makeText(getActivity(), "Received", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 10, 50);
                     toast.show();
+                    Registration.setEnabled(true);
                 }
                 if (result.result == 1) {
                     Toast toast = Toast.makeText(getActivity(), "failed", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.BOTTOM, 10, 50);
                     toast.show();
+                    Registration.setEnabled(true);
                 }
 
-            }
-            else{
+            } else {
                 UiUtils.showToastByApiException(getActivity(), excep);
             }
 

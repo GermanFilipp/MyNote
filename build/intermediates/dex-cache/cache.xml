@@ -2,16 +2,16 @@
 <pre-dex-items>
 
     <item
+        dex="C:\Users\gera\Documents\GitHub\MyNote\app\build\intermediates\pre-dexed\debug\support-v13-19.1.0-6b1b9dd658bd3eabfae49dd530d3154307f21b35.jar"
+        jar="C:\Users\gera\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v13\19.1.0\support-v13-19.1.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="6b852a232f642c75a7fdfc7212b841b8c8f8959c" />
+    <item
         dex="C:\Users\gera\Documents\GitHub\MyNote\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-c677ff24c14f7da1d1dfe565b6043874e73b9e0c.jar"
         jar="C:\Users\gera\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+        jumboMode="false" revision="19.1.0" sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67" />
     <item
         dex="C:\Users\gera\Documents\GitHub\MyNote\app\build\intermediates\pre-dexed\debug\classes-030dbd76338793a36c0173c4204958875996de6c.jar"
         jar="C:\Users\gera\Documents\GitHub\MyNote\app\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.2.0\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="fcb12c1fb0fead47bb81f7a118b2b2d9fe1cf53e"/>
+        jumboMode="false" revision="19.1.0" sha1="fcb12c1fb0fead47bb81f7a118b2b2d9fe1cf53e" />
 
 </pre-dex-items>

@@ -2,6 +2,7 @@ package com.example.note.api;
 
 import android.net.Uri;
 import android.util.Log;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -9,6 +10,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,47 +19,77 @@ import java.util.ArrayList;
 
 public class API {
     private static String convertInputStreamToString(InputStream inputStream) throws APIexception {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
         try {
-            while((line = bufferedReader.readLine()) != null)
+            while ((line = bufferedReader.readLine()) != null)
                 result += line;
             inputStream.close();
         } catch (IOException e) {
-            throw new APIexception(APIexception.TypeError.ERROR ,e);
+            throw new APIexception(APIexception.TypeError.ERROR, e);
         }
         return result;
     }
-    public static String GET(String url) throws APIexception{
+
+    public static String GET(String url) throws APIexception {
         InputStream inputStream = null;
         String result = "";
         try {
-            Log.d("GET","request: " +url);            // create HttpClient
+            Log.d("GET", "request: " + url);            // create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
             // make GET request to the given URL
             HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
             // receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
             // convert inputstream to string
-            if(inputStream != null)
+            if (inputStream != null)
                 result = convertInputStreamToString(inputStream);
             else
                 result = "Did not work!";
 
         } catch (Exception e) {
-            throw new APIexception(APIexception.TypeError.ERROR_CONNECTION ,e);
-    }
-     finally {
-            Log.d("GET","response: "+result);
+            throw new APIexception(APIexception.TypeError.ERROR_CONNECTION, e);
+        } finally {
+            Log.d("GET", "response: " + result);
         }
         return result;
     }
-    private  static Uri.Builder createUrlBuilder () {
+
+    private static Uri.Builder createUrlBuilder() {
         return new Uri.Builder()
                 .scheme("http")
                 .encodedAuthority("notes-androidcoursesdp.rhcloud.com")
                 .appendPath("REST");
+    }
+
+    public static GetNoteResponse getNote(String _sessionID, long _noteID) throws APIexception {
+        String rawResponse = GET(createUrlBuilder().appendPath("getNote")
+                .appendQueryParameter("sessionID", _sessionID)
+                .appendQueryParameter("noteID", Long.toString(_noteID))
+                .toString());
+        GetNoteResponse response = null;
+        try {
+            response = new GetNoteResponse(new JSONObject(rawResponse));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public static EditNoteResponse getEditNote(String _sessionID, long _noteID, String _text) throws APIexception {
+        String rawResponse = GET(createUrlBuilder().appendPath("editNote")
+                .appendQueryParameter("sessionID", _sessionID)
+                .appendQueryParameter("noteID", String.valueOf(_noteID))
+                .appendQueryParameter("text", _text)
+                .toString());
+        EditNoteResponse response = null;
+        try {
+            response = new EditNoteResponse(new JSONObject(rawResponse));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 
     public LoginResponse login(String l, String p) throws APIexception {
@@ -92,7 +124,7 @@ public class API {
         return response;
     }
 
-    public CreateNoteResponse putNote(String id,String note,String note_title_note) throws APIexception {
+    public CreateNoteResponse putNote(String id, String note, String note_title_note) throws APIexception {
         String rawResponse = GET(createUrlBuilder().appendPath("createNote")
                 .appendQueryParameter("sessionID", id)
                 .appendQueryParameter("title", note_title_note)
@@ -101,20 +133,6 @@ public class API {
         CreateNoteResponse response = null;
         try {
             response = new CreateNoteResponse(new JSONObject(rawResponse));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
-
-    public GetNoteResponse getNote(String _sessionID, long _noteID) throws APIexception {
-        String rawResponse = GET(createUrlBuilder().appendPath("getNote")
-                .appendQueryParameter("sessionID", _sessionID)
-                .appendQueryParameter("noteID", Long.toString(_noteID))
-                .toString());
-        GetNoteResponse response = null;
-        try {
-            response = new GetNoteResponse(new JSONObject(rawResponse));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -148,7 +166,7 @@ public class API {
         return response;
     }
 
-    public ChangePasswordResponse getChangePassword(String _sessionID,String _newPass,String _oldPass )throws APIexception{
+    public ChangePasswordResponse getChangePassword(String _sessionID, String _newPass, String _oldPass) throws APIexception {
         String rawResponse = GET(createUrlBuilder().appendPath("changePassword")
                 .appendQueryParameter("sessionID", _sessionID)
                 .appendQueryParameter("newPass", _newPass)
@@ -163,21 +181,6 @@ public class API {
         }
         Log.d("getChangePassword", "oldPass: " + _oldPass);
         Log.d("getChangePassword", "newPass: " + _newPass);
-        return response;
-    }
-
-    public EditNoteResponse getEditNote(String _sessionID, long _noteID, String _text) throws APIexception {
-        String rawResponse = GET(createUrlBuilder().appendPath("editNote")
-                .appendQueryParameter("sessionID", _sessionID)
-                .appendQueryParameter("noteID", String.valueOf(_noteID))
-                .appendQueryParameter("text", _text)
-                .toString());
-        EditNoteResponse response = null;
-        try {
-            response = new EditNoteResponse(new JSONObject(rawResponse));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return response;
     }
 
@@ -316,7 +319,7 @@ public class API {
             return notes;
         }
 
-        }
+    }
 
     public static class LogoutResponse {
         public int result;
@@ -352,22 +355,12 @@ public class API {
     }
 
     public static class DeleteNoteResponse {
-       public int result;
-        public DeleteNoteResponse (JSONObject obj) throws JSONException{
+        public int result;
+
+        public DeleteNoteResponse(JSONObject obj) throws JSONException {
             result = obj.getInt("result");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

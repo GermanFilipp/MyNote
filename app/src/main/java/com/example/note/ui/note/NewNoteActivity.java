@@ -1,19 +1,18 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.note.MyApplication;
 import com.example.note.R;
@@ -22,9 +21,42 @@ import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 
+import java.io.Serializable;
+
 public class NewNoteActivity extends Activity {
     public API API;
-    public String KEY = "123";
+    public String KEY_FOR_NOTE_CREATE = "KEY_FOR_NOTE_CREATE";
+    public LoaderManager.LoaderCallbacks<API.CreateNoteResponse> createNoteResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.CreateNoteResponse>() {
+
+
+        NoteCreate request;
+
+        @Override
+        public Loader<API.CreateNoteResponse> onCreateLoader(int id, Bundle args) {
+
+
+            request = (NoteCreate) args.getSerializable(KEY_FOR_NOTE_CREATE);
+            return new NoteCreateLoader(NewNoteActivity.this, (NoteCreate) args.getSerializable(KEY_FOR_NOTE_CREATE));
+
+        }
+
+        @Override
+        public void onLoadFinished(Loader<API.CreateNoteResponse> loader, API.CreateNoteResponse data) {
+
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(UserDataBase.TableData.TITLE, request.getTitile());
+            contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
+            contentValues.put(UserDataBase.TableData._ID, data.getNoteID()  /* request.getSessionID()*/);
+            getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<API.CreateNoteResponse> loader) {
+
+        }
+    };
     protected EditText textNote;
     protected EditText titleNote;
     //protected Note note = new Note();
@@ -42,12 +74,10 @@ public class NewNoteActivity extends Activity {
         c = (getContentResolver().query(DataBaseContentProvider.URI_NOTE, myContent, null, null, "_ID"));
         noteAdapter = new NoteAdapter(this, c);
 
-        textNote  = (EditText) findViewById(R.id.textNote);
+        textNote = (EditText) findViewById(R.id.textNote);
         titleNote = (EditText) findViewById(R.id.titleNote);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Bundle bndl = new Bundle();
-        bndl.putSerializable(KEY, NoteCreate);
 
     }
 
@@ -70,11 +100,15 @@ public class NewNoteActivity extends Activity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         final String NOTE_TITLE_NOTE = titleNote.getText().toString();
-        final String NOTE            = textNote.getText().toString();
-
+        final String NOTE = textNote.getText().toString();
         switch (item.getItemId()) {
             case R.id.action_save_new_note:
-                new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
+
+                Bundle bndl = new Bundle();
+                NoteCreate noteCreate = new NoteCreate(((MyApplication) getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE);
+                bndl.putSerializable(KEY_FOR_NOTE_CREATE, noteCreate);
+                getLoaderManager().initLoader(2, bndl, createNoteResponseLoaderCallbacks);
+                //new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
 
 
                 return true;
@@ -89,16 +123,15 @@ public class NewNoteActivity extends Activity {
         }
     }
 
-
-    public class NoteCreate {
+    public class NoteCreate implements Serializable{
         private String sessionID;
         private String title;
         private String content;
 
         NoteCreate(String _sessionID, String _title, String _content) {
             sessionID = _sessionID;
-            title 	  = _title;
-            content   = _content;
+            title = _title;
+            content = _content;
         }
 
         public String getTitile() {
@@ -114,22 +147,30 @@ public class NewNoteActivity extends Activity {
         }
     }
 
-
     public class NoteCreateLoader extends AsyncTaskLoader<API.CreateNoteResponse> {
+
+        public NoteCreate noteCreate;
 
         public NoteCreateLoader(Context context, NoteCreate noteCreate) {
             super(context);
             this.noteCreate = noteCreate;
         }
 
+
         @Override
         public API.CreateNoteResponse loadInBackground() {
+            try {
+                return API.putNote(noteCreate.getSessionID(), noteCreate.getContent(), noteCreate.getTitile());
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
             return null;
         }
     }
 
 
-    public class MyAsyncTask extends AsyncTask<NoteCreate, Void, com.example.note.api.API.CreateNoteResponse> {
+
+   /* public class MyAsyncTask extends AsyncTask<NoteCreate, Void, com.example.note.api.API.CreateNoteResponse> {
 
         NoteCreate request;
         APIexception apiexception;
@@ -163,7 +204,7 @@ public class NewNoteActivity extends Activity {
                         ContentValues contentValues = new ContentValues();
                         contentValues.put(UserDataBase.TableData.TITLE, request.getTitile());
                         contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
-                        contentValues.put(UserDataBase.TableData._ID, result.getNoteID()  /* request.getSessionID()*/);
+                        contentValues.put(UserDataBase.TableData._ID, result.getNoteID()  *//* request.getSessionID()*//*);
                         getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
                         noteAdapter.swapCursor(c);
 
@@ -187,5 +228,5 @@ public class NewNoteActivity extends Activity {
                 toast1.show();
             }
         }
-    }
+    }*/
 }

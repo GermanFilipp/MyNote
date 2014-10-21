@@ -18,6 +18,8 @@ import com.example.note.R;
 import com.example.note.api.APIexception;
 import com.example.note.ui.login.MainActivity;
 
+import java.io.Serializable;
+
 public class ChangePasswordActivity extends Activity implements OnClickListener {
     protected NoteAdapter noteAdapter;
     API API;
@@ -73,7 +75,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
         }
     }
 
-    public class ChangeUserPassword {
+    public class ChangeUserPassword implements Serializable {
         private String sessionID;
         private String oldPassword;
         private String newPassword;

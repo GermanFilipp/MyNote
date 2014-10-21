@@ -1,17 +1,18 @@
 package com.example.note.ui.note;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.note.MyApplication;
 import com.example.note.R;
@@ -21,14 +22,58 @@ import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 
+import java.io.Serializable;
+
 public class EditNoteActivity extends Activity {
 
     private final String LONG_EXTRA = "ID";
     private final String INT_EXTRA = "POSITION";
+    private final String GET_NOTE_KEY = "GET_NOTE_KEY";
+    public LoaderManager.LoaderCallbacks<API.GetNoteResponse> getNoteResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.GetNoteResponse>() {
+
+        @Override
+        public Loader<API.GetNoteResponse> onCreateLoader(int id, Bundle args) {
+            return new GetNoteLoader(EditNoteActivity.this, (GetNote) args.getSerializable(GET_NOTE_KEY));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<API.GetNoteResponse> loader, API.GetNoteResponse data) {
+            getActionBar().setTitle(data.getTitle());
+            editNote.setText(data.getContent());
+        }
+
+        @Override
+        public void onLoaderReset(Loader<API.GetNoteResponse> loader) {
+
+        }
+    };
+    private final String EDIT_NOTE_KEY = "EDIT_NOTE_KEY";
+    public LoaderManager.LoaderCallbacks<EditNoteResponse> editNoteResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<EditNoteResponse>() {
+        EditNote request;
+
+        @Override
+        public Loader<EditNoteResponse> onCreateLoader(int id, Bundle args) {
+            return new EditNoteLoader(EditNoteActivity.this, (EditNote) args.getSerializable(EDIT_NOTE_KEY));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<EditNoteResponse> loader, EditNoteResponse data) {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(UserDataBase.TableData._ID, request.getNoteID());
+            contentValues.put(UserDataBase.TableData.TITLE, request.text);
+
+            getContentResolver().update(DataBaseContentProvider.URI_NOTE, contentValues, UserDataBase.TableData._ID + " = " + request.getNoteID(), null);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<EditNoteResponse> loader) {
+
+        }
+    };
     protected EditText editNote;
     protected String title;
     protected NoteAdapter noteAdapter;
-
     Cursor c;
 
     @Override
@@ -37,6 +82,8 @@ public class EditNoteActivity extends Activity {
 
 
     }
+
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +96,12 @@ public class EditNoteActivity extends Activity {
                 UserDataBase.TableData.SHORT_CONTENT};
         getContentResolver().query(DataBaseContentProvider.URI_NOTE, myContent, null, null, "_ID");
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        Bundle getNoteBundle = new Bundle();
+        GetNote getNote = new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1));
+        getNoteBundle.putSerializable(GET_NOTE_KEY, getNote);
 
-        new GetNoteAsyncTask().execute(new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
+        //new GetNoteAsyncTask().execute(new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
+        getLoaderManager().initLoader(1, getNoteBundle, getNoteResponseLoaderCallbacks);
     }
 
     @Override
@@ -67,12 +118,20 @@ public class EditNoteActivity extends Activity {
         intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intentLogOut);
     }
+
+    ;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_note:
-                new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
-                        editNote.getText().toString()));
+                Bundle editNoteBundle = new Bundle();
+                EditNote editNoteLoader = new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
+                        editNote.getText().toString());
+                editNoteBundle.putSerializable(EDIT_NOTE_KEY, editNoteLoader);
+                getLoaderManager().initLoader(1, editNoteBundle, editNoteResponseLoaderCallbacks);
+               /* new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
+                        editNote.getText().toString()));*/
 
                 backPreasd();
                 finish();
@@ -86,9 +145,7 @@ public class EditNoteActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    ;
-
-    public class GetNote {
+    public class GetNote implements Serializable {
         private long noteID;
         private String sessionID;
 
@@ -106,9 +163,26 @@ public class EditNoteActivity extends Activity {
         }
     }
 
-    ;
+    public class GetNoteLoader extends AsyncTaskLoader<API.GetNoteResponse>{
+        public GetNote getNote;
 
-    public class EditNote {
+        public GetNoteLoader(Context context, GetNote getNote) {
+            super(context);
+            this.getNote = getNote;
+        }
+
+        @Override
+        public API.GetNoteResponse loadInBackground() {
+            try {
+                return API.getNote(getNote.getSessionID(), getNote.getNoteID());
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class EditNote implements Serializable {
         private long noteID;
         private String sessionID;
         private String text;
@@ -132,7 +206,27 @@ public class EditNoteActivity extends Activity {
         }
     }
 
-    public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {
+    public class EditNoteLoader extends AsyncTaskLoader<EditNoteResponse> {
+        EditNote editNote;
+
+        public EditNoteLoader(Context context, EditNote editNote) {
+            super(context);
+
+
+            this.editNote = editNote;
+        }
+
+        @Override
+        public EditNoteResponse loadInBackground() {
+            try {
+                return API.getEditNote(editNote.sessionID, editNote.noteID, editNote.text);
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+  /*  public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {
 
         APIexception apiexception;
         API API = new API();
@@ -186,21 +280,10 @@ public class EditNoteActivity extends Activity {
                 }
             }
         }
-    }
+    }*/
 
-    public class EditNoteRequest {
-        public long noteID;
-        public String sessionID;
-        public String text;
 
-        public EditNoteRequest(String _sessionID, long _noteID, String _text) {
-            noteID = _noteID;
-            sessionID = _sessionID;
-            text = _text;
-        }
-    }
-
-    public class GetNoteAsyncTask extends AsyncTask<GetNote, Void, API.GetNoteResponse> {
+/*    public class GetNoteAsyncTask extends AsyncTask<GetNote, Void, API.GetNoteResponse> {
         APIexception apiexception;
         GetNote request;
 
@@ -250,5 +333,5 @@ public class EditNoteActivity extends Activity {
                 }
             }
         }
-    }
+    }*/
 }

@@ -145,25 +145,7 @@ public class EditNoteActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class GetNote implements Serializable {
-        private long noteID;
-        private String sessionID;
-
-        public GetNote(String _sessionID, long _noteID) {
-            noteID = _noteID;
-            sessionID = _sessionID;
-        }
-
-        public long getNoteID() {
-            return noteID;
-        }
-
-        public String getSessionID() {
-            return sessionID;
-        }
-    }
-
-    public class GetNoteLoader extends AsyncTaskLoader<API.GetNoteResponse>{
+    public static class GetNoteLoader extends AsyncTaskLoader<API.GetNoteResponse>{
         public GetNote getNote;
 
         public GetNoteLoader(Context context, GetNote getNote) {
@@ -179,6 +161,45 @@ public class EditNoteActivity extends Activity {
                 apIexception.printStackTrace();
             }
             return null;
+        }
+    }
+
+    public static class EditNoteLoader extends AsyncTaskLoader<EditNoteResponse> {
+        EditNote editNote;
+
+        public EditNoteLoader(Context context, EditNote editNote) {
+            super(context);
+
+
+            this.editNote = editNote;
+        }
+
+        @Override
+        public EditNoteResponse loadInBackground() {
+            try {
+                return API.getEditNote(editNote.sessionID, editNote.noteID, editNote.text);
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class GetNote implements Serializable {
+        private long noteID;
+        private String sessionID;
+
+        public GetNote(String _sessionID, long _noteID) {
+            noteID = _noteID;
+            sessionID = _sessionID;
+        }
+
+        public long getNoteID() {
+            return noteID;
+        }
+
+        public String getSessionID() {
+            return sessionID;
         }
     }
 
@@ -203,27 +224,6 @@ public class EditNoteActivity extends Activity {
 
         public String getText() {
             return text;
-        }
-    }
-
-    public class EditNoteLoader extends AsyncTaskLoader<EditNoteResponse> {
-        EditNote editNote;
-
-        public EditNoteLoader(Context context, EditNote editNote) {
-            super(context);
-
-
-            this.editNote = editNote;
-        }
-
-        @Override
-        public EditNoteResponse loadInBackground() {
-            try {
-                return API.getEditNote(editNote.sessionID, editNote.noteID, editNote.text);
-            } catch (APIexception apIexception) {
-                apIexception.printStackTrace();
-            }
-            return null;
         }
     }
   /*  public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {

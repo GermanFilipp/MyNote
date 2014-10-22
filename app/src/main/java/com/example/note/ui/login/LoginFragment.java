@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         return inflater.inflate(R.layout.log_frag, container, false);
-
+        //getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
     }
 
 
@@ -85,6 +85,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         editor.putString("password", PASSWORD);
         editor.commit();
     }
+
 
     public static class LoginRequest {
 

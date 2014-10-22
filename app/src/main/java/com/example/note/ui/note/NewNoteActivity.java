@@ -24,7 +24,7 @@ import com.example.note.model.dataBase.UserDataBase;
 import java.io.Serializable;
 
 public class NewNoteActivity extends Activity {
-    public API API;
+    public static API API;
     public String KEY_FOR_NOTE_CREATE = "KEY_FOR_NOTE_CREATE";
     public LoaderManager.LoaderCallbacks<API.CreateNoteResponse> createNoteResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.CreateNoteResponse>() {
 
@@ -50,6 +50,9 @@ public class NewNoteActivity extends Activity {
             contentValues.put(UserDataBase.TableData._ID, data.getNoteID()  /* request.getSessionID()*/);
             getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
 
+            Intent intentLogOut = new Intent(NewNoteActivity.this, NoteActivity.class);
+            intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intentLogOut);
         }
 
         @Override
@@ -107,7 +110,7 @@ public class NewNoteActivity extends Activity {
                 Bundle bndl = new Bundle();
                 NoteCreate noteCreate = new NoteCreate(((MyApplication) getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE);
                 bndl.putSerializable(KEY_FOR_NOTE_CREATE, noteCreate);
-                getLoaderManager().initLoader(2, bndl, createNoteResponseLoaderCallbacks);
+                getLoaderManager().initLoader(2, bndl, createNoteResponseLoaderCallbacks).forceLoad();
                 //new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
 
 
@@ -123,7 +126,28 @@ public class NewNoteActivity extends Activity {
         }
     }
 
-    public class NoteCreate implements Serializable{
+    public static class NoteCreateLoader extends AsyncTaskLoader<API.CreateNoteResponse> {
+
+        public NoteCreate noteCreate;
+
+        public NoteCreateLoader(Context context, NoteCreate noteCreate) {
+            super(context);
+            this.noteCreate = noteCreate;
+        }
+
+
+        @Override
+        public API.CreateNoteResponse loadInBackground() {
+            try {
+                return API.putNote(noteCreate.getSessionID(), noteCreate.getContent(), noteCreate.getTitile());
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class NoteCreate implements Serializable {
         private String sessionID;
         private String title;
         private String content;
@@ -144,27 +168,6 @@ public class NewNoteActivity extends Activity {
 
         public String getSessionID() {
             return sessionID;
-        }
-    }
-
-    public class NoteCreateLoader extends AsyncTaskLoader<API.CreateNoteResponse> {
-
-        public NoteCreate noteCreate;
-
-        public NoteCreateLoader(Context context, NoteCreate noteCreate) {
-            super(context);
-            this.noteCreate = noteCreate;
-        }
-
-
-        @Override
-        public API.CreateNoteResponse loadInBackground() {
-            try {
-                return API.putNote(noteCreate.getSessionID(), noteCreate.getContent(), noteCreate.getTitile());
-            } catch (APIexception apIexception) {
-                apIexception.printStackTrace();
-            }
-            return null;
         }
     }
 

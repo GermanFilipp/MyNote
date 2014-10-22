@@ -35,6 +35,7 @@ import java.io.Serializable;
 public class NoteActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LONG_EXTRA = "ID";
     private static final String INT_EXTRA = "POSITION";
+    public static API API = new API();
     private final String KEY_FOR_BUNDLE = "KEY_FOR_BUNDLE";
     public LoaderManager.LoaderCallbacks<API.GetNotesListResponse> notesListResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.GetNotesListResponse>() {
         @Override
@@ -106,7 +107,6 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         }
     };
-    public API API = new API();
     protected NoteAdapter noteAdapter;
     protected ListView lv;
     protected AlertDialog.Builder alertDialog;
@@ -124,7 +124,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         bundle.putString(KEY_FOR_BUNDLE, (((MyApplication) getApplication()).getLocalData().getSessionID()));
 
         getLoaderManager().initLoader(1, bundle, this);
-        getLoaderManager().initLoader(2, bundle, notesListResponseLoaderCallbacks);
+        getLoaderManager().initLoader(2, bundle, notesListResponseLoaderCallbacks).forceLoad();
 
 
         String buttonOK = "Ок";
@@ -142,7 +142,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
                 Bundle deleteBundle = new Bundle();
                 DeleteRequest deleteRequest = new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId);
                 deleteBundle.putSerializable(DELETE_KEY_FOR_BUNDLE, deleteRequest);
-                getLoaderManager().initLoader(3, deleteBundle, deleteNoteResponseLoaderCallbacks);
+                getLoaderManager().initLoader(3, deleteBundle, deleteNoteResponseLoaderCallbacks).forceLoad();
 
 
                 //new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId));
@@ -210,7 +210,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks);
+                        getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks).forceLoad();
                         //new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
                         finish();
                        /* NoteActivity.super.onBackPressed();*/
@@ -250,7 +250,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
                 return true;
             case R.id.action_logOut:
                 API = new API();
-                getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks);
+                getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks).forceLoad();
                 // new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
                 finish();
                 return true;
@@ -351,17 +351,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
          }
      }*/
 
-    public class NotesList {
-        private String sessionID;
-
-        NotesList(String _sessionID) {
-            sessionID = _sessionID;
-        }
-
-
-    }
-
-    public class MyNotesListAsyncTaskLoader extends AsyncTaskLoader<API.GetNotesListResponse> {
+    public static class MyNotesListAsyncTaskLoader extends AsyncTaskLoader<API.GetNotesListResponse> {
 
         private String sessionID;
 
@@ -372,7 +362,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         @Override
         public API.GetNotesListResponse loadInBackground() {
-            getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
+
 
             try {
                 return API.getNotesList(this.sessionID);
@@ -386,7 +376,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
     }
 
-    public class DeleteLoader extends AsyncTaskLoader<DeleteNoteResponse> {
+    public static class DeleteLoader extends AsyncTaskLoader<DeleteNoteResponse> {
         public DeleteRequest deleteRequest;
 
         public DeleteLoader(Context context, DeleteRequest deleteRequest) {
@@ -398,6 +388,26 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         public DeleteNoteResponse loadInBackground() {
             try {
                 return API.deleteNote(deleteRequest.getSessionID(), deleteRequest.getNoteID());
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public static class LogOutLoader extends AsyncTaskLoader<API.LogoutResponse> {
+        String sessionID;
+
+        public LogOutLoader(Context context, String sessionID) {
+            super(context);
+            this.sessionID = sessionID;
+        }
+
+        @Override
+        public API.LogoutResponse loadInBackground() {
+
+            try {
+                return API.getLogout(this.sessionID);
             } catch (APIexception apIexception) {
                 apIexception.printStackTrace();
             }
@@ -458,6 +468,18 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
     }
 */
 
+    public class NotesList {
+        private String sessionID;
+
+        NotesList(String _sessionID) {
+            sessionID = _sessionID;
+        }
+
+
+    }
+
+    ;
+
     public class DeleteRequest implements Serializable {
         private String sessionID;
         private long noteId;
@@ -473,28 +495,6 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         public long getNoteID() {
             return noteId;
-        }
-    }
-
-    ;
-
-    public class LogOutLoader extends AsyncTaskLoader<API.LogoutResponse> {
-        String sessionID;
-
-        public LogOutLoader(Context context, String sessionID) {
-            super(context);
-            this.sessionID = sessionID;
-        }
-
-        @Override
-        public API.LogoutResponse loadInBackground() {
-
-            try {
-                return API.getLogout(this.sessionID);
-            } catch (APIexception apIexception) {
-                apIexception.printStackTrace();
-            }
-            return null;
         }
     }
 

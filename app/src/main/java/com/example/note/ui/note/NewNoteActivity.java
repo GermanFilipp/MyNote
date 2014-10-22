@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,8 +22,6 @@ import com.example.note.api.API;
 import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
-
-import java.io.Serializable;
 
 public class NewNoteActivity extends Activity {
     public static API API;
@@ -35,8 +35,8 @@ public class NewNoteActivity extends Activity {
         public Loader<API.CreateNoteResponse> onCreateLoader(int id, Bundle args) {
 
 
-            request = (NoteCreate) args.getSerializable(KEY_FOR_NOTE_CREATE);
-            return new NoteCreateLoader(NewNoteActivity.this, (NoteCreate) args.getSerializable(KEY_FOR_NOTE_CREATE));
+            request = (NoteCreate) args.getParcelable(KEY_FOR_NOTE_CREATE);
+            return new NoteCreateLoader(NewNoteActivity.this, (NoteCreate) args.getParcelable(KEY_FOR_NOTE_CREATE));
 
         }
 
@@ -45,8 +45,8 @@ public class NewNoteActivity extends Activity {
 
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put(UserDataBase.TableData.TITLE, request.getTitile());
-            contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.getContent());
+            contentValues.put(UserDataBase.TableData.TITLE, request.title);
+            contentValues.put(UserDataBase.TableData.SHORT_CONTENT, request.content);
             contentValues.put(UserDataBase.TableData._ID, data.getNoteID()  /* request.getSessionID()*/);
             getContentResolver().insert(DataBaseContentProvider.URI_NOTE, contentValues);
 
@@ -108,8 +108,9 @@ public class NewNoteActivity extends Activity {
             case R.id.action_save_new_note:
 
                 Bundle bndl = new Bundle();
-                NoteCreate noteCreate = new NoteCreate(((MyApplication) getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE);
-                bndl.putSerializable(KEY_FOR_NOTE_CREATE, noteCreate);
+                // NoteCreate noteCreate = new NoteCreate(((MyApplication) getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE);
+                //  bndl.putSerializable(KEY_FOR_NOTE_CREATE, noteCreate);
+                bndl.putParcelable(KEY_FOR_NOTE_CREATE, new NoteCreate(((MyApplication) getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
                 getLoaderManager().initLoader(2, bndl, createNoteResponseLoaderCallbacks).forceLoad();
                 //new MyAsyncTask().execute(new  NoteCreate(((MyApplication)getApplication()).getLocalData().getSessionID(), NOTE_TITLE_NOTE, NOTE));
 
@@ -139,7 +140,7 @@ public class NewNoteActivity extends Activity {
         @Override
         public API.CreateNoteResponse loadInBackground() {
             try {
-                return API.putNote(noteCreate.getSessionID(), noteCreate.getContent(), noteCreate.getTitile());
+                return API.putNote(noteCreate.sessionID, noteCreate.content, noteCreate.title);
             } catch (APIexception apIexception) {
                 apIexception.printStackTrace();
             }
@@ -147,7 +148,49 @@ public class NewNoteActivity extends Activity {
         }
     }
 
-    public class NoteCreate implements Serializable {
+    public class NoteCreate implements Parcelable {
+        public final Creator<NoteCreate> CREATOR = new Parcelable.Creator<NoteCreate>() {
+
+            @Override
+            public NoteCreate createFromParcel(Parcel source) {
+                return new NoteCreate(source);
+            }
+
+            @Override
+            public NoteCreate[] newArray(int size) {
+                return new NoteCreate[size];
+            }
+        };
+        private String sessionID;
+        private String title;
+        private String content;
+
+        public NoteCreate(Parcel source) {
+            sessionID = source.readString();
+            title = source.readString();
+            content = source.readString();
+        }
+
+        public NoteCreate(String _sessionID, String _title, String _content) {
+            sessionID = _sessionID;
+            title = _title;
+            content = _content;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(sessionID);
+            dest.writeString(title);
+            dest.writeString(content);
+        }
+    }
+/*    public class NoteCreate implements Serializable {
+
         private String sessionID;
         private String title;
         private String content;
@@ -169,7 +212,7 @@ public class NewNoteActivity extends Activity {
         public String getSessionID() {
             return sessionID;
         }
-    }
+    }*/
 
 
 

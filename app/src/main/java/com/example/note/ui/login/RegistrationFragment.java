@@ -1,8 +1,13 @@
 package com.example.note.ui.login;
 
 import android.app.Fragment;
-import android.os.AsyncTask;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+import android.content.Loader;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,14 +17,45 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.note.api.API;
 import com.example.note.R;
+import com.example.note.api.API;
 import com.example.note.api.APIexception;
-import com.example.note.utils.UiUtils;
 
 public class RegistrationFragment extends Fragment implements View.OnClickListener {
 
-    MyAsyncTask mt;
+    private final String KEY_FOR_LOGIN = "KEY_FOR_LOGIN";
+    public LoaderManager.LoaderCallbacks<API.RegistesResponse> registesResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.RegistesResponse>() {
+
+        LoginRequest request;
+
+        @Override
+        public Loader<API.RegistesResponse> onCreateLoader(int id, Bundle args) {
+            request = (LoginRequest) args.getParcelable(KEY_FOR_LOGIN);
+            return new RegisterLoader(getActivity(), (LoginRequest) args.getParcelable(KEY_FOR_LOGIN));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<API.RegistesResponse> loader, API.RegistesResponse data) {
+            if (data.result == 0) {
+                Toast toast = Toast.makeText(getActivity(), "Received", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 10, 50);
+                toast.show();
+                Registration.setEnabled(true);
+            }
+            if (data.result == 1) {
+                Toast toast = Toast.makeText(getActivity(), "failed", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 10, 50);
+                toast.show();
+                Registration.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<API.RegistesResponse> loader) {
+
+        }
+    };
+    // MyAsyncTask mt;
     API api = new API();
     MainActivity m = new MainActivity();
     private EditText LogText;
@@ -50,7 +86,13 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         final String PASS = PassText.getText().toString();
         final String REPEATPASS = RepeatPassText.getText().toString();
         if (PASS.equals(REPEATPASS) && !TextUtils.isEmpty(LOGIN) && !TextUtils.isEmpty(PASS) && !TextUtils.isEmpty(REPEATPASS)) {
-            new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
+
+
+            Bundle loginBundle = new Bundle();
+            LoginRequest loginRequest = new LoginRequest(LOGIN, PASS);
+            loginBundle.putParcelable(KEY_FOR_LOGIN, loginRequest);
+            getLoaderManager().initLoader(1, loginBundle, registesResponseLoaderCallbacks).forceLoad();
+            // new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
 
 
 //			Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -60,13 +102,44 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         Registration.setEnabled(true);
         Registration.setEnabled(false);
 
-        new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
+        //new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
 
 
     }
 
-    public static class LoginRequest {
+    public static class RegisterLoader extends AsyncTaskLoader<API.RegistesResponse> {
+        LoginRequest loginRequest;
 
+        public RegisterLoader(Context context, LoginRequest loginRequest) {
+            super(context);
+            this.loginRequest = loginRequest;
+        }
+
+        @Override
+        public API.RegistesResponse loadInBackground() {
+            try {
+                return new API().register(loginRequest.login, loginRequest.pass);
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public static class LoginRequest implements Parcelable {
+
+        public final Creator<LoginRequest> CREATOR = new Parcelable.Creator<LoginRequest>() {
+
+            @Override
+            public LoginRequest createFromParcel(Parcel source) {
+                return new LoginRequest(source);
+            }
+
+            @Override
+            public LoginRequest[] newArray(int size) {
+                return new LoginRequest[size];
+            }
+        };
         String login = "";
         String pass = "";
 
@@ -75,9 +148,25 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             pass = p;
 
         }
+
+        public LoginRequest(Parcel source) {
+            source.writeString(login);
+            source.writeString(pass);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(login);
+            dest.writeString(pass);
+        }
     }
 
-    public class MyAsyncTask extends AsyncTask<LoginRequest, Void, API.RegistesResponse> {
+  /*  public class MyAsyncTask extends AsyncTask<LoginRequest, Void, API.RegistesResponse> {
         APIexception excep;
 
         @Override
@@ -118,7 +207,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
 
         }
-    }
+    }*/
 
 
 }

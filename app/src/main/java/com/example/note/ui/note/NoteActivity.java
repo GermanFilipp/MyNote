@@ -11,7 +11,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,8 +32,6 @@ import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
 import com.example.note.ui.login.MainActivity;
 
-import java.io.Serializable;
-
 
 public class NoteActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LONG_EXTRA = "ID";
@@ -46,6 +47,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         @Override
         public void onLoadFinished(Loader<API.GetNotesListResponse> loader, API.GetNotesListResponse data) {
+            Log.d("onLoadFinished", "data: " + data.getNotesArray());
             if (data.getNotesArray() != null) {
 
                 ContentValues[] contentValues = new ContentValues[data.getNotesArray().size()];
@@ -76,6 +78,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         @Override
         public void onLoadFinished(Loader<API.LogoutResponse> loader, API.LogoutResponse data) {
+            getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
             Intent intentLogOut = new Intent(NoteActivity.this, MainActivity.class);
             intentLogOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intentLogOut);
@@ -86,20 +89,32 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         }
     };
-    private final String DELETE_KEY_FOR_BUNDLE = "DELETE_KEY_FOR_BUNDLE";
+    // public Cursor c;
+    public long lastDeleteId;
+    protected NoteAdapter noteAdapter;
+    protected ListView lv;
+    protected AlertDialog.Builder alertDialog;
+    Context context;
+    private String DELETE_KEY_FOR_BUNDLE = "DELETE_KEY_FOR_BUNDLE";
     public LoaderManager.LoaderCallbacks<DeleteNoteResponse> deleteNoteResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<DeleteNoteResponse>() {
 
-        DeleteRequest request;
+        public DeleteRequest request;
 
         @Override
         public Loader<DeleteNoteResponse> onCreateLoader(int id, Bundle args) {
-            request = (DeleteRequest) args.getSerializable(DELETE_KEY_FOR_BUNDLE);
-            return new DeleteLoader(NoteActivity.this, (DeleteRequest) args.getSerializable(DELETE_KEY_FOR_BUNDLE));
+            request = (DeleteRequest) args.getParcelable(DELETE_KEY_FOR_BUNDLE);
+            Log.d("DelrequesteteRequest", "request: " + request);
+            return new DeleteLoader(NoteActivity.this, (DeleteRequest) args.getParcelable(DELETE_KEY_FOR_BUNDLE));
+
         }
 
         @Override
         public void onLoadFinished(Loader<DeleteNoteResponse> loader, DeleteNoteResponse data) {
-            getContentResolver().delete(DataBaseContentProvider.URI_NOTE, UserDataBase.TableData._ID + " = " + request.getNoteID(), null);
+
+
+            getContentResolver().delete(DataBaseContentProvider.URI_NOTE, UserDataBase.TableData._ID + " = " + request.noteId, null);
+
+
         }
 
         @Override
@@ -107,12 +122,6 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
         }
     };
-    protected NoteAdapter noteAdapter;
-    protected ListView lv;
-    protected AlertDialog.Builder alertDialog;
-    Context context;
-    // public Cursor c;
-    long lastDeleteId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,7 +133,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         bundle.putString(KEY_FOR_BUNDLE, (((MyApplication) getApplication()).getLocalData().getSessionID()));
 
         getLoaderManager().initLoader(1, bundle, this);
-        getLoaderManager().initLoader(2, bundle, notesListResponseLoaderCallbacks).forceLoad();
+        getLoaderManager().restartLoader(2, bundle, notesListResponseLoaderCallbacks).forceLoad();
 
 
         String buttonOK = "Ок";
@@ -141,8 +150,8 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
                 Bundle deleteBundle = new Bundle();
                 DeleteRequest deleteRequest = new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId);
-                deleteBundle.putSerializable(DELETE_KEY_FOR_BUNDLE, deleteRequest);
-                getLoaderManager().initLoader(3, deleteBundle, deleteNoteResponseLoaderCallbacks).forceLoad();
+                deleteBundle.putParcelable(DELETE_KEY_FOR_BUNDLE, new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId));
+                getLoaderManager().restartLoader(3, deleteBundle, deleteNoteResponseLoaderCallbacks).forceLoad();
 
 
                 //new DeleteAsyncTask().execute(new DeleteRequest(((MyApplication) getApplication()).getLocalData().getSessionID(), lastDeleteId));
@@ -193,8 +202,11 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         noteAdapter.setOnDeleteClickListener(new NoteAdapter.OnDeleteItemListner() {
             @Override
             public void onItemDeleteClick(long id) {
+
                 lastDeleteId = id;
+                Log.d("LastDeleted id", "madness: " + lastDeleteId);
                 alertDialog.show();
+
 
             }
         });
@@ -210,7 +222,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks).forceLoad();
+                        getLoaderManager().initLoader(4, bnl, logoutResponseLoaderCallbacks).forceLoad();
                         //new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
                         finish();
                        /* NoteActivity.super.onBackPressed();*/
@@ -250,7 +262,8 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
                 return true;
             case R.id.action_logOut:
                 API = new API();
-                getLoaderManager().initLoader(3, bnl, logoutResponseLoaderCallbacks).forceLoad();
+                getLoaderManager().initLoader(4, bnl, logoutResponseLoaderCallbacks).forceLoad();
+                getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
                 // new MyAsyncTask().execute(new LogOut(((MyApplication) getApplication()).getLocalData().getSessionID()));
                 finish();
                 return true;
@@ -387,7 +400,9 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         @Override
         public DeleteNoteResponse loadInBackground() {
             try {
-                return API.deleteNote(deleteRequest.getSessionID(), deleteRequest.getNoteID());
+                Log.d("loadInBackground", "deleteRequest" + deleteRequest);
+                return API.deleteNote(deleteRequest.sessionID, deleteRequest.noteId);
+
             } catch (APIexception apIexception) {
                 apIexception.printStackTrace();
             }
@@ -480,7 +495,47 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
 
     ;
 
-    public class DeleteRequest implements Serializable {
+    public class DeleteRequest implements Parcelable {
+        public final Creator<DeleteRequest> CREATOR = new Parcelable.Creator<DeleteRequest>() {
+
+            @Override
+            public DeleteRequest createFromParcel(Parcel source) {
+                return new DeleteRequest(source);
+            }
+
+            @Override
+            public DeleteRequest[] newArray(int size) {
+                return new DeleteRequest[size];
+            }
+        };
+        private String sessionID;
+        private long noteId;
+
+        public DeleteRequest(Parcel source) {
+            sessionID = source.readString();
+            noteId = source.readLong();
+        }
+
+
+        public DeleteRequest(String sessionID, long lastDeleteId) {
+            this.sessionID = sessionID;
+            noteId = lastDeleteId;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(sessionID);
+            dest.writeLong(noteId);
+
+        }
+    }
+
+/*    public class DeleteRequest implements Serializable {
         private String sessionID;
         private long noteId;
 
@@ -496,7 +551,7 @@ public class NoteActivity extends FragmentActivity implements LoaderManager.Load
         public long getNoteID() {
             return noteId;
         }
-    }
+    }*/
 
     public class LogOut {
         private String sessionID;

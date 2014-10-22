@@ -9,10 +9,15 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.note.MyApplication;
 import com.example.note.R;
@@ -21,8 +26,6 @@ import com.example.note.api.API.EditNoteResponse;
 import com.example.note.api.APIexception;
 import com.example.note.model.dataBase.DataBaseContentProvider;
 import com.example.note.model.dataBase.UserDataBase;
-
-import java.io.Serializable;
 
 public class EditNoteActivity extends Activity {
 
@@ -33,7 +36,7 @@ public class EditNoteActivity extends Activity {
 
         @Override
         public Loader<API.GetNoteResponse> onCreateLoader(int id, Bundle args) {
-            return new GetNoteLoader(EditNoteActivity.this, (GetNote) args.getSerializable(GET_NOTE_KEY));
+            return new GetNoteLoader(EditNoteActivity.this, (GetNote) args.getParcelable(GET_NOTE_KEY));
         }
 
         @Override
@@ -53,7 +56,8 @@ public class EditNoteActivity extends Activity {
 
         @Override
         public Loader<EditNoteResponse> onCreateLoader(int id, Bundle args) {
-            return new EditNoteLoader(EditNoteActivity.this, (EditNote) args.getSerializable(EDIT_NOTE_KEY));
+            request = (EditNote) args.getParcelable(EDIT_NOTE_KEY);
+            return new EditNoteLoader(EditNoteActivity.this, (EditNote) args.getParcelable(EDIT_NOTE_KEY));
         }
 
         @Override
@@ -63,7 +67,12 @@ public class EditNoteActivity extends Activity {
             contentValues.put(UserDataBase.TableData._ID, request.getNoteID());
             contentValues.put(UserDataBase.TableData.TITLE, request.text);
 
+
             getContentResolver().update(DataBaseContentProvider.URI_NOTE, contentValues, UserDataBase.TableData._ID + " = " + request.getNoteID(), null);
+
+            Toast toast = Toast.makeText(EditNoteActivity.this, "Create note compleate", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 10, 50);
+            toast.show();
         }
 
         @Override
@@ -98,10 +107,10 @@ public class EditNoteActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle getNoteBundle = new Bundle();
         GetNote getNote = new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1));
-        getNoteBundle.putSerializable(GET_NOTE_KEY, getNote);
+        getNoteBundle.putParcelable(GET_NOTE_KEY, getNote);
 
         //new GetNoteAsyncTask().execute(new GetNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1)));
-        getLoaderManager().initLoader(1, getNoteBundle, getNoteResponseLoaderCallbacks);
+        getLoaderManager().initLoader(1, getNoteBundle, getNoteResponseLoaderCallbacks).forceLoad();
     }
 
     @Override
@@ -128,8 +137,9 @@ public class EditNoteActivity extends Activity {
                 Bundle editNoteBundle = new Bundle();
                 EditNote editNoteLoader = new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
                         editNote.getText().toString());
-                editNoteBundle.putSerializable(EDIT_NOTE_KEY, editNoteLoader);
-                getLoaderManager().initLoader(1, editNoteBundle, editNoteResponseLoaderCallbacks);
+                editNoteBundle.putParcelable(EDIT_NOTE_KEY, editNoteLoader);
+                Log.d("actionEdit", "editNoteBundle" + editNoteBundle);
+                getLoaderManager().initLoader(4, editNoteBundle, editNoteResponseLoaderCallbacks).forceLoad();
                /* new EditNoteAsyncTask().execute(new EditNote(((MyApplication) getApplication()).getLocalData().getSessionID(), getIntent().getLongExtra(LONG_EXTRA, -1),
                         editNote.getText().toString()));*/
 
@@ -185,13 +195,30 @@ public class EditNoteActivity extends Activity {
         }
     }
 
-    public class GetNote implements Serializable {
+    public class GetNote implements Parcelable {
+        public final Creator<GetNote> CREATOR = new Parcelable.Creator<GetNote>() {
+
+            @Override
+            public GetNote createFromParcel(Parcel source) {
+                return new GetNote(source);
+            }
+
+            @Override
+            public GetNote[] newArray(int size) {
+                return new GetNote[size];
+            }
+        };
         private long noteID;
         private String sessionID;
 
         public GetNote(String _sessionID, long _noteID) {
             noteID = _noteID;
             sessionID = _sessionID;
+        }
+
+        public GetNote(Parcel source) {
+            source.writeLong(noteID);
+            source.writeString(sessionID);
         }
 
         public long getNoteID() {
@@ -201,9 +228,32 @@ public class EditNoteActivity extends Activity {
         public String getSessionID() {
             return sessionID;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(noteID);
+            dest.writeString(sessionID);
+        }
     }
 
-    public class EditNote implements Serializable {
+    public class EditNote implements Parcelable {
+        public final Creator<EditNote> CREATOR = new Parcelable.Creator<EditNote>() {
+
+            @Override
+            public EditNote createFromParcel(Parcel source) {
+                return new EditNote(source);
+            }
+
+            @Override
+            public EditNote[] newArray(int size) {
+                return new EditNote[size];
+            }
+        };
         private long noteID;
         private String sessionID;
         private String text;
@@ -212,6 +262,12 @@ public class EditNoteActivity extends Activity {
             noteID = _noteID;
             sessionID = _sessionID;
             text = _text;
+        }
+
+        public EditNote(Parcel source) {
+            source.writeLong(noteID);
+            source.writeString(sessionID);
+            source.writeString(text);
         }
 
         public long getNoteID() {
@@ -224,6 +280,18 @@ public class EditNoteActivity extends Activity {
 
         public String getText() {
             return text;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(noteID);
+            dest.writeString(sessionID);
+            dest.writeString(text);
         }
     }
   /*  public class EditNoteAsyncTask extends AsyncTask<EditNote, Void, EditNoteResponse> {

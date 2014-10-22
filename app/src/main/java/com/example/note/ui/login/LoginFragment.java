@@ -2,11 +2,15 @@ package com.example.note.ui.login;
 
 
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,14 +25,47 @@ import com.example.note.R;
 import com.example.note.api.API;
 import com.example.note.api.APIexception;
 import com.example.note.ui.note.NoteActivity;
-import com.example.note.utils.UiUtils;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private static final String PREF_SETTINGS = "Settings";
     private static final String PREF_SETTINGS_LOGIN = "Login";
+    private final String KEY_FOR_LOGIN = "KEY_FOR_LOGIN";
+    public LoaderManager.LoaderCallbacks<API.LoginResponse> loginResponseLoaderCallbacks = new LoaderManager.LoaderCallbacks<API.LoginResponse>() {
+        LoginRequest request;
+
+        @Override
+        public Loader<API.LoginResponse> onCreateLoader(int id, Bundle args) {
+            request = args.getParcelable(KEY_FOR_LOGIN);
+            return new LoginAsyncTaskLoader(getActivity(), (LoginRequest) args.getParcelable(KEY_FOR_LOGIN));
+        }
+
+        @Override
+        public void onLoadFinished(Loader<API.LoginResponse> loader, API.LoginResponse data) {
+            if (data.getUserCreate() == 0) {
+                ((MyApplication) getActivity().getApplication()).getLocalData().setSessionID(data.sessionID);
+                Toast toast = Toast.makeText(getActivity(), "Received", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 10, 50);
+                toast.show();
+                // getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
+                Intent intent = new Intent(getActivity(), NoteActivity.class);
+                startActivity(intent);
+
+            }
+            if (data.getUserCreate() == 1) {
+                Toast toast1 = Toast.makeText(getActivity(), "failed", Toast.LENGTH_LONG);
+                toast1.setGravity(Gravity.BOTTOM, 10, 50);
+                toast1.show();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<API.LoginResponse> loader) {
+
+        }
+    };
     API api = new API();
-    MyAsyncTask mt;
+    //MyAsyncTask mt;
     private EditText LogText;
     private EditText PassText;
     private Button Login;
@@ -36,9 +73,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
         return inflater.inflate(R.layout.log_frag, container, false);
-        //getContentResolver().delete(DataBaseContentProvider.URI_NOTE, null, null);
-    }
 
+    }
 
     @Override
     public void onViewCreated(View view, Bundle saveInstanceState) {
@@ -71,7 +107,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             toast.setGravity(Gravity.BOTTOM, 10, 50);
             toast.show();
         } else {
-            new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
+            Bundle loginBundle = new Bundle();
+            LoginRequest loginRequest = new LoginRequest(LOGIN, PASS);
+            loginBundle.putParcelable(KEY_FOR_LOGIN, loginRequest);
+            getLoaderManager().initLoader(1, loginBundle, loginResponseLoaderCallbacks).forceLoad();
+            // new MyAsyncTask().execute(new LoginRequest(LOGIN, PASS));
         }
     }
 
@@ -86,9 +126,40 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         editor.commit();
     }
 
+    public static class LoginAsyncTaskLoader extends AsyncTaskLoader<API.LoginResponse> {
+        public LoginRequest loginRequest;
 
-    public static class LoginRequest {
+        public LoginAsyncTaskLoader(Context context, LoginRequest loginRequest) {
+            super(context);
+            this.loginRequest = loginRequest;
+        }
 
+
+        @Override
+        public API.LoginResponse loadInBackground() {
+            try {
+                return new API().login(loginRequest.login, loginRequest.pass);
+            } catch (APIexception apIexception) {
+                apIexception.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public static class LoginRequest implements Parcelable {
+
+        public final Creator<LoginRequest> CREATOR = new Parcelable.Creator<LoginRequest>() {
+
+            @Override
+            public LoginRequest createFromParcel(Parcel source) {
+                return new LoginRequest(source);
+            }
+
+            @Override
+            public LoginRequest[] newArray(int size) {
+                return new LoginRequest[size];
+            }
+        };
         String login = "";
         String pass = "";
 
@@ -97,10 +168,27 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             pass = p;
 
         }
+
+        public LoginRequest(Parcel source) {
+            source.writeString(login);
+            source.writeString(pass);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(login);
+            dest.writeString(pass);
+        }
     }
 
 
-    public class MyAsyncTask extends AsyncTask<LoginRequest, Void, API.LoginResponse> {
+
+   /* public class MyAsyncTask extends AsyncTask<LoginRequest, Void, API.LoginResponse> {
 
         APIexception excep;
 
@@ -142,5 +230,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-    }
+    }*/
 }

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.note.api.API;
 import com.example.note.MyApplication;
 import com.example.note.R;
+import com.example.note.api.API;
 import com.example.note.api.APIexception;
 import com.example.note.ui.login.MainActivity;
-
-import java.io.Serializable;
 
 public class ChangePasswordActivity extends Activity implements OnClickListener {
     static API API;
@@ -31,7 +31,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
 
         @Override
         public Loader<API.ChangePasswordResponse> onCreateLoader(int id, Bundle args) {
-            return new ChangeUserPasswordLoader(ChangePasswordActivity.this, (ChangeUserPassword) args.getSerializable(KEY_FOR_CHANGE_PASS));
+            return new ChangeUserPasswordLoader(ChangePasswordActivity.this, (ChangeUserPassword) args.getParcelable(KEY_FOR_CHANGE_PASS));
         }
 
         @Override
@@ -96,7 +96,7 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
         final String REENTER_NEW_PASSWORD = reenterNewPassword.getText().toString();
         Bundle changeBundle = new Bundle();
         ChangeUserPassword changeUserPassword = new ChangeUserPassword(SESSION_ID, OLD_PASSWORD, NEW_PASSWORD);
-        changeBundle.putSerializable(KEY_FOR_CHANGE_PASS, changeUserPassword);
+        changeBundle.putParcelable(KEY_FOR_CHANGE_PASS, changeUserPassword);
 
         if (NEW_PASSWORD.equals(REENTER_NEW_PASSWORD)) {
             getLoaderManager().initLoader(1, changeBundle, changePasswordResponseLoaderCallbacks).forceLoad();
@@ -127,7 +127,19 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
         }
     }
 
-    public class ChangeUserPassword implements Serializable {
+    public class ChangeUserPassword implements Parcelable {
+        public final Creator<ChangeUserPassword> CREATOR = new Parcelable.Creator<ChangeUserPassword>() {
+
+            @Override
+            public ChangeUserPassword createFromParcel(Parcel source) {
+                return new ChangeUserPassword(source);
+            }
+
+            @Override
+            public ChangeUserPassword[] newArray(int size) {
+                return new ChangeUserPassword[size];
+            }
+        };
         private String sessionID;
         private String oldPassword;
         private String newPassword;
@@ -136,6 +148,12 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
             sessionID = _sessionID;
             oldPassword = _oldPassword;
             newPassword = _newPassword;
+        }
+
+        public ChangeUserPassword(Parcel source) {
+            source.writeString(sessionID);
+            source.writeString(oldPassword);
+            source.writeString(newPassword);
         }
 
         public String getSessionID() {
@@ -149,6 +167,21 @@ public class ChangePasswordActivity extends Activity implements OnClickListener 
         public String getNewPassword() {
             return newPassword;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(sessionID);
+            dest.writeString(oldPassword);
+            dest.writeString(newPassword);
+
+        }
+
+
     }
 
     public class MyAsyncTask extends AsyncTask<ChangeUserPassword, Void, API.ChangePasswordResponse> {

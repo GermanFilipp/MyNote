@@ -35,7 +35,7 @@ public class NewNoteActivity extends Activity {
         public Loader<API.CreateNoteResponse> onCreateLoader(int id, Bundle args) {
 
 
-            request = (NoteCreate) args.getParcelable(KEY_FOR_NOTE_CREATE);
+            request = args.getParcelable(KEY_FOR_NOTE_CREATE);
             return new NoteCreateLoader(NewNoteActivity.this, (NoteCreate) args.getParcelable(KEY_FOR_NOTE_CREATE));
 
         }
